@@ -53,6 +53,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 | Missão 1.4 — arquivos e gestão | Concluída | Upload, QR Code e painel multiempresa |
 | Missão 1.5 — analytics e eventos | Concluída | Eventos anônimos, gráficos, origens e CSV |
 | Missão 1.6 — inteligência opcional | Concluída | Insights locais, IA opcional, orçamento e aprovação |
+| Missão 1.7 — planos e cobrança | Concluída | Catálogo, trial, Asaas sandbox, webhook e financeiro |
 | Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
 ## Funcionalidades implementadas
@@ -81,6 +82,10 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - complemento generativo opcional, desligado por padrão e sem dados pessoais;
 - limites mensais de requisições e tokens isolados por empresa;
 - histórico auditável e aprovação ou rejeição humana;
+- planos Essencial, Negócios e Premium com limites versionados;
+- trial de 14 dias e assinatura mensal via Asaas sandbox;
+- webhook financeiro autenticado, idempotente e isolado por empresa;
+- histórico de cobranças e links de fatura validados;
 - migrations PostgreSQL versionadas;
 - CI com banco real e testes ponta a ponta.
 
@@ -129,6 +134,7 @@ taplink-negocios/
 | `/dashboard/organizations` | Autenticado | Seleção da empresa ativa |
 | `/dashboard/analytics` | Autenticado | Métricas e gráficos da empresa |
 | `/dashboard/insights` | Autenticado | Resumo, recomendações e orçamento de IA |
+| `/dashboard/billing` | Autenticado | Planos, assinatura e histórico financeiro |
 | `/admin/companies` | Administrador da plataforma | Cadastro de empresas |
 | `/p/[slug]` | Público | Página publicada |
 | `/api/health` | Técnico | Saúde da aplicação e banco |
@@ -138,6 +144,9 @@ taplink-negocios/
 | `/api/uploads/logo` | Editor autorizado | Upload seguro da logo |
 | `/api/public/[slug]/events` | Público | Coleta anônima e deduplicada |
 | `/api/analytics/export` | Autenticado | Exportação CSV por período |
+| `/api/billing/plans` | Público | Catálogo comercial ativo |
+| `/api/billing/subscribe` | Proprietário | Criação idempotente no Asaas sandbox |
+| `/api/billing/webhooks/asaas` | Asaas | Eventos financeiros autenticados |
 
 ## Desenvolvimento local
 
@@ -207,6 +216,16 @@ Nenhum deploy será realizado antes da auditoria definida em [`docs/SERVER_ISOLA
 - Google Avaliações — link direto configurado;
 - WhatsApp `wa.me` — atendimento e pedidos.
 
+### Planos do piloto
+
+| Plano | Mensalidade | Limites iniciais |
+|---|---:|---|
+| Essencial | R$ 39,90 | 5 placas e 2 usuários |
+| Negócios | R$ 69,90 | 20 placas, 5 usuários e analytics |
+| Premium | R$ 99,90 | 50 placas, 10 usuários e IA opcional |
+
+O trial é de 14 dias. A Missão 1.7 opera somente no sandbox do Asaas e aceita Pix ou boleto. A criação da assinatura não confirma pagamento: apenas eventos `PAYMENT_CONFIRMED` ou `PAYMENT_RECEIVED` ativam o estado financeiro. Eventos vencidos iniciam a régua de inadimplência sem excluir página ou dados.
+
 ### Futuras
 
 - Google Business Profile;
@@ -241,13 +260,13 @@ Consulte [`SECURITY.md`](SECURITY.md).
 
 ## Próxima missão
 
-### Missão 1.7 — planos e cobrança recorrente
+### Missão 1.8 — administração operacional
 
-- planos comerciais e limites de recursos;
-- cliente e assinatura no Asaas sandbox;
-- webhook idempotente e auditável;
-- área financeira do estabelecimento;
-- régua de inadimplência sem apagar página ou dados.
+- gestão interna de assinaturas e inadimplência;
+- troca de plano e cancelamento seguro;
+- limites de placas e usuários aplicados no backend;
+- conciliação e reprocessamento de webhook;
+- indicadores comerciais da plataforma.
 
 ## Titularidade
 

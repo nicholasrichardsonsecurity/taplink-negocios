@@ -24,6 +24,12 @@
 - minimização: payload do modelo exclui IP, user-agent, hash de visitante, Wi-Fi e segredos;
 - supervisão: resultado generativo exige aprovação ou rejeição humana e gera auditoria;
 - resiliência: erro, ausência de chave ou estouro de orçamento aciona fallback determinístico;
+- billing: integração limitada ao Asaas sandbox até autorização formal de produção;
+- webhook: token mínimo de 32 caracteres comparado em tempo constante;
+- idempotência: cada `providerEventId` é aceito uma única vez em constraint do banco;
+- minimização financeira: CPF/CNPJ, e-mail e telefone seguem ao Asaas e não são persistidos no TapLink nesta versão;
+- faturas: somente URLs HTTPS do domínio Asaas são armazenadas e exibidas;
+- inadimplência: altera estado administrativo, mas não apaga automaticamente páginas ou dados;
 - auditoria de dependências: deve ser repetida no CI e antes de cada implantação.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
@@ -36,6 +42,7 @@ O resultado de uma auditoria representa apenas o instante em que foi executada e
 - credenciais do LoopClub não podem ser reutilizadas;
 - tokens e senhas não devem aparecer em logs, issues, commits ou mensagens;
 - `OPENAI_API_KEY` é segredo exclusivo do TapLink, nunca armazenado no banco nem exibido no painel;
+- `ASAAS_API_KEY` e `ASAAS_WEBHOOK_SECRET` devem ser exclusivos do TapLink e de cada ambiente;
 - banco, cache e armazenamento não podem publicar portas diretamente na internet.
 
 ## Skills e agentes de desenvolvimento
@@ -90,6 +97,9 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 - rate limiting distribuído na geração de insights, além do orçamento persistido;
 - reserva transacional de orçamento para alta concorrência antes da ativação comercial da IA;
 - política de retenção e avaliação periódica dos relatórios generativos;
+- proteção CSRF dedicada na contratação antes da ativação comercial;
+- fila de reprocessamento, alertas de webhook interrompido e conciliação financeira;
+- fluxo de cartão por tokenização ou checkout hospedado, sem captura de cartão pelo TapLink;
 - agendamento e monitoramento operacional do expurgo de analytics;
 - headers CSP definitivos;
 - logs estruturados e alertas;

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.0 — 25/08/2026
+
+- planos Essencial, Negócios e Premium definidos em R$ 39,90, R$ 69,90 e R$ 99,90;
+- limites iniciais de placas, usuários e IA persistidos no catálogo;
+- trial de 14 dias e contratação por proprietário implementados;
+- criação e reutilização de cliente e assinatura no Asaas sandbox adicionadas;
+- Pix e boleto habilitados sem coleta de cartão no TapLink;
+- webhook Asaas autenticado, idempotente e multiempresa criado;
+- eventos financeiros traduzidos para estados internos auditáveis;
+- painel de plano, contratação e histórico de cobranças criado;
+- URLs de fatura restritas a HTTPS e domínio Asaas;
+- migration `0005_naive_sharon_carter.sql` e testes de billing adicionados.
+
 ## 0.6.0 — 25/08/2026
 
 - painel `/dashboard/insights` com resumo semanal e recomendações criado;

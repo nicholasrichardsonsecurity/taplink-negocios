@@ -2,10 +2,11 @@ import test,{after} from "node:test";
 import assert from "node:assert/strict";
 import {eq} from "drizzle-orm";
 import {db,sql} from "../packages/database/client";
-import {analyticsEvents,memberships,organizations,publicPages,users} from "../packages/database/schema";
+import {analyticsEvents,billingPayments,billingPlans,memberships,organizationSubscriptions,organizations,publicPages,users} from "../packages/database/schema";
 import {getTenantMembership,requireTenantMembership} from "../packages/database/tenant";
 import {hashPassword} from "../lib/auth/password";
 import {decryptSecret} from "../lib/crypto/secrets";
+import {processAsaasWebhook} from "../lib/billing-service";
 
 after(()=>sql.end());
 
@@ -26,3 +27,17 @@ test("isola um usuário de outra empresa",async t=>{
 
 test("mantém rascunho separado da versão publicada e cifra o Wi-Fi",async()=>{const [page]=await db.select().from(publicPages).where(eq(publicPages.slug,"empresa-ci")).limit(1);assert.ok(page);assert.equal(JSON.parse(page.settingsJson).tagline,"Alteração ainda em rascunho.");assert.equal(JSON.parse(page.publishedSettingsJson).tagline,"Sabor publicado pelo CI.");assert.doesNotMatch(page.secretsJson,/senha-wifi-ci/);assert.doesNotMatch(page.publishedSecretsJson,/senha-wifi-ci/);assert.equal(decryptSecret(JSON.parse(page.publishedSecretsJson).wifiPassword),"senha-wifi-ci")});
 test("deduplica analytics e não persiste endereço ou user-agent",async()=>{const rows=await db.select().from(analyticsEvents);assert.equal(rows.filter(row=>row.eventType==="page_view").length,1);assert.equal(rows.filter(row=>row.action==="Avaliar").length,1);assert.doesNotMatch(JSON.stringify(rows),/192\.0\.2\.20|taplink-ci-browser/)});
+
+test("processa webhook Asaas de forma idempotente e isolada",async t=>{
+ process.env.ASAAS_WEBHOOK_SECRET="webhook-integration-secret-with-at-least-32-chars";
+ const suffix=crypto.randomUUID().slice(0,8);
+ const [org]=await db.insert(organizations).values({name:"Billing CI",slug:`billing-ci-${suffix}`,status:"active"}).returning();
+ t.after(async()=>{await db.delete(organizations).where(eq(organizations.id,org.id))});
+ const [plan]=await db.select().from(billingPlans).where(eq(billingPlans.code,"essencial")).limit(1);assert.ok(plan);
+ const [subscription]=await db.insert(organizationSubscriptions).values({organizationId:org.id,planId:plan.id,status:"trial",providerSubscriptionId:`sub_${suffix}`,providerCustomerId:`cus_${suffix}`,trialEndsAt:new Date(Date.now()+86400000)}).returning();
+ const raw=JSON.stringify({id:`evt_${suffix}`,event:"PAYMENT_RECEIVED",payment:{id:`pay_${suffix}`,subscription:`sub_${suffix}`,value:39.9,dueDate:"2026-09-08",paymentDate:"2026-09-08",invoiceUrl:"https://sandbox.asaas.com/i/teste"}});
+ const first=await processAsaasWebhook(raw,process.env.ASAAS_WEBHOOK_SECRET);const duplicate=await processAsaasWebhook(raw,process.env.ASAAS_WEBHOOK_SECRET);
+ assert.equal(first.status,200);assert.equal("duplicate" in duplicate.body&&duplicate.body.duplicate,true);
+ const payments=await db.select().from(billingPayments).where(eq(billingPayments.subscriptionId,subscription.id));assert.equal(payments.length,1);assert.equal(payments[0].status,"received");
+ const [updated]=await db.select().from(organizationSubscriptions).where(eq(organizationSubscriptions.id,subscription.id));assert.equal(updated.status,"active");
+});

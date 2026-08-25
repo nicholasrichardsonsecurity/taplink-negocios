@@ -13,7 +13,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/**/*.test.ts",
-    "test:unit": "node --import tsx --test tests/password.test.ts tests/page-settings.test.ts tests/secrets.test.ts tests/wifi.test.ts tests/analytics.test.ts tests/insights.test.ts",
+    "test:unit": "node --import tsx --test tests/password.test.ts tests/page-settings.test.ts tests/secrets.test.ts tests/wifi.test.ts tests/analytics.test.ts tests/insights.test.ts tests/billing.test.ts",
     "test:integration": "node --import tsx --test tests/database.integration.test.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
