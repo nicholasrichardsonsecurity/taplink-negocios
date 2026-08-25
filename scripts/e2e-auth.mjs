@@ -23,6 +23,7 @@ assert.ok(cookie?.startsWith("taplink_session="),"Cookie de sessão não foi emi
 
 const dashboard=await fetch(`${url}/dashboard`,{headers:{cookie},redirect:"manual"});
 assert.equal(dashboard.status,200,"Dashboard protegido não abriu com a sessão");
+assert.match(dashboard.headers.get("content-security-policy")??"",/frame-ancestors 'none'/);
 const html=await dashboard.text();
 assert.match(html,/Empresa CI/);
 assert.match(html,/Owner CI/);
@@ -42,6 +43,7 @@ const analytics=await fetch(`${url}/dashboard/analytics?days=90`,{headers:{cooki
 const billing=await fetch(`${url}/dashboard/billing`,{headers:{cookie}});assert.equal(billing.status,200);const billingHtml=await billing.text();assert.match(billingHtml,/R\$ 39,90|R\$ 39,90/);assert.match(billingHtml,/ambiente sandbox/);
 const operations=await fetch(`${url}/admin/operations`,{headers:{cookie}});assert.equal(operations.status,200);const operationsHtml=await operations.text();assert.match(operationsHtml,/Controle sem planilha paralela/);assert.match(operationsHtml,/Empresa CI/);
 const securityAdmin=await fetch(`${url}/admin/security`,{headers:{cookie}});assert.equal(securityAdmin.status,200);assert.match(await securityAdmin.text(),/Sessões sob controle/);
+const reconciliation=await fetch(`${url}/admin/reconciliation`,{headers:{cookie}});assert.equal(reconciliation.status,200);assert.match(await reconciliation.text(),/Comparar sem alterar/);
 const csrfBlocked=await fetch(`${url}/api/admin/billing`,{method:"POST",headers:{cookie,"content-type":"application/x-www-form-urlencoded",origin:url},body:new URLSearchParams({organizationId:"00000000-0000-0000-0000-000000000000",action:"cancel",reason:"tentativa sem csrf",confirmation:"empresa-ci"}),redirect:"manual"});assert.equal(csrfBlocked.status,403,"Operação financeira sem CSRF deveria ser bloqueada");
 const draftSettings={...settings,tagline:"Alteração ainda em rascunho."};
 const draft=await fetch(`${url}/api/page-settings`,{method:"PUT",headers:{"content-type":"application/json",cookie},body:JSON.stringify({settings:draftSettings,publish:false})});assert.equal(draft.status,200);

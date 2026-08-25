@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.1 — 25/08/2026
+
+- CSP, COOP e CORP aplicados às respostas da aplicação;
+- rate limiting persistente adicionado aos eventos públicos, Wi-Fi, QR Wi-Fi e upload de logo;
+- painel de conciliação consultiva do Asaas sandbox criado;
+- comparação registra estados, valores e divergências de cobranças sem mutação;
+- E2E ampliado para headers e acesso ao painel de conciliação;
+- auditoria somente leitura do Debian mantida como gate pendente.
+
 ## 0.9.0 — 25/08/2026
 
 - rate limiting persistente no PostgreSQL adicionado ao login e à recuperação de senha;

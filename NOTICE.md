@@ -28,6 +28,8 @@ A Missão 1.8 adicionou o painel interno de operação financeira e aplicação 
 
 A Missão 1.9A adicionou controles de acesso, recuperação de senha e revogação de sessões. O Resend é apenas uma integração opcional e nenhum segredo ou token real foi configurado. O Debian e o LoopClub não foram acessados ou modificados; a homologação continua bloqueada até a auditoria 1.9B.
 
+A Missão 1.9B.1 adicionou proteção de borda e consulta financeira somente leitura. Nenhuma consulta ao Asaas real foi executada e nenhuma evidência do Debian foi presumida; o gate do host continua aberto.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

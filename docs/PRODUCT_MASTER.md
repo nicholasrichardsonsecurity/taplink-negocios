@@ -84,6 +84,8 @@ Operação administrativa concluída na Missão 1.8: indicadores internos, carte
 
 Endurecimento de acesso concluído na Missão 1.9A: rate limiting compartilhado no PostgreSQL, CSRF vinculado à sessão nas operações financeiras, recuperação sem enumeração de conta, token de uso único por 30 minutos, redefinição com revogação total de sessões e revogação administrativa auditável. A entrega por e-mail usa Resend somente quando configurado com domínio e chave exclusivos.
 
+A etapa 1.9B.1 adicionou headers de segurança, limites persistentes para endpoints públicos e conciliação consultiva do Asaas. A consulta é manual, somente leitura, não substitui webhooks e registra contagens e divergências sem persistir payload bruto.
+
 ### Modelo comercial físico + software
 
 - placas 10 × 15 cm, tags NFC, impressão UV, embalagem, frete e instalação são cobrados como hardware ou serviço de implantação;
@@ -101,4 +103,4 @@ Endurecimento de acesso concluído na Missão 1.9A: rate limiting compartilhado 
 4. Missão 1.7: concluída;
 5. Missão 1.8: concluída;
 6. Missão 1.9A: endurecimento de acesso concluído;
-7. Missão 1.9B: auditoria somente leitura do Debian, conciliação e gate do piloto.
+7. Missão 1.9B.2: auditoria somente leitura do Debian e gate do piloto.

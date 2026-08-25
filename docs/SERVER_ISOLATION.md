@@ -22,7 +22,8 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - migration `0005_naive_sharon_carter.sql` criada para planos, assinaturas, cobranças e eventos; ainda não aplicada no Debian;
 - migration `0006_revise_plan_entitlements.sql` criada para separar direitos do software da quantidade de placas; ainda não aplicada no Debian;
 - migration `0007_security_controls.sql` criada para rate limiting e recuperação de senha; ainda não aplicada no Debian;
-- a Missão 1.9A não acessou nem alterou o Debian; a auditoria real permanece pendente na Missão 1.9B;
+- a Missão 1.9A não acessou nem alterou o Debian; a auditoria real permanece pendente na Missão 1.9B.2;
+- a Missão 1.9B.1 concluiu controles em código, mas não constitui evidência de auditoria ou deploy no host;
 - Asaas permanece em sandbox e usa somente saída HTTPS; webhook não será exposto no IP sem domínio, TLS e auditoria;
 
 ## Regra de ouro

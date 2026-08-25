@@ -9,6 +9,7 @@ import {
 } from "@/lib/analytics";
 import { db } from "@/packages/database/client";
 import { analyticsEvents, publicPages } from "@/packages/database/schema";
+import { consumeRateLimit, requestIp, securityHash } from "@/lib/security";
 
 const eventSchema = z.discriminatedUnion("eventType", [
   z.object({
@@ -32,6 +33,8 @@ export async function POST(
   if (!parsed.success)
     return Response.json({ error: "Evento inválido." }, { status: 400 });
   const { slug } = await params;
+  const rate = await consumeRateLimit({ scope: "public_events", identity: securityHash(`${requestIp(request)}|${slug}`), limit: 120, windowMs: 60_000 });
+  if (!rate.allowed) return new Response(null, { status: 429, headers: { "retry-after": String(rate.retryAfterSeconds) } });
   const [page] = await db
     .select({
       id: publicPages.id,

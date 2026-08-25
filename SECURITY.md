@@ -41,6 +41,9 @@
 - revogação administrativa: exige administrador da plataforma, CSRF, confirmação do e-mail, motivo e auditoria;
 - e-mail: recuperação por Resend somente com chave e remetente exclusivos, idempotência e sem logs do link;
 - secret scan: padrões de chaves privadas e credenciais conhecidas bloqueiam o CI antes do merge;
+- borda: CSP, COOP, CORP, proteção contra frame, MIME sniffing e política de permissões aplicadas globalmente;
+- APIs públicas: limites persistentes separados para eventos, Wi-Fi, QR Wi-Fi e upload de logo;
+- conciliação: consulta pontual ao Asaas sandbox registra divergências na auditoria sem modificar cobrança ou estado local;
 - auditoria de dependências: deve ser repetida no CI e antes de cada implantação.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
@@ -101,7 +104,7 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 
 - segundo fator para painel interno;
 - expandir CSRF para todas as mutações não financeiras;
-- rate limiting nos endpoints públicos de Wi-Fi, eventos e arquivos;
+- substituir `unsafe-inline` do CSP por nonces após adequar scripts e estilos do Next.js;
 - antivírus e quarentena para tipos de arquivo futuros além de imagens;
 - limitação de requisições no endpoint público de Wi-Fi;
 - rate limiting distribuído no endpoint público de eventos;
