@@ -5,6 +5,7 @@
 - ambiente: desenvolvimento e integração contínua;
 - dados reais: proibidos;
 - deploy no Debian: ainda não realizado;
+- auditoria do host: capacidade, portas e Caddy aprovados; firewall do host e backup exclusivo do TapLink ainda não implantados;
 - PostgreSQL testado: instância descartável do GitHub Actions;
 - autenticação: senha com `scrypt`, sessão opaca e cookie `HttpOnly`;
 - isolamento: associação obrigatória entre usuário e empresa, coberta por teste automatizado;
@@ -91,6 +92,8 @@ Nenhum deploy pode ocorrer sem:
 5. segredos exclusivos;
 6. healthcheck;
 7. plano de rollback.
+
+A homologação anterior ao domínio será permitida somente por túnel SSH para `127.0.0.1:3400`, sem clientes, Wi-Fi ou cobrança reais. Publicação externa exige firewall definido, backup próprio e restauração testada conforme [`docs/BACKUP_AND_ROLLBACK.md`](docs/BACKUP_AND_ROLLBACK.md).
 
 ## Vulnerabilidades
 

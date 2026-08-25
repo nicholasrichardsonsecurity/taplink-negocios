@@ -103,4 +103,4 @@ A etapa 1.9B.1 adicionou headers de segurança, limites persistentes para endpoi
 4. Missão 1.7: concluída;
 5. Missão 1.8: concluída;
 6. Missão 1.9A: endurecimento de acesso concluído;
-7. Missão 1.9B.2: auditoria Debian em andamento; capacidade e portas aprovadas, com firewall, Caddy, backup e rollback ainda pendentes para o gate do piloto.
+7. Missão 1.9B.2: auditoria Debian em andamento; capacidade, portas e Caddy aprovados, com firewall, backup próprio e teste de restauração/rollback ainda pendentes para o gate público.
