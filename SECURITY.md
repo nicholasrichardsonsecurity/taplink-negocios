@@ -33,6 +33,14 @@
 - operação interna: ações financeiras exigem administrador da plataforma, motivo e confirmação pelo slug da empresa;
 - consistência externa: mudança, suspensão, reativação ou cancelamento atualiza primeiro o Asaas sandbox e só então o banco local;
 - direitos de plano: histórico de analytics, CSV e IA são verificados no backend, não apenas ocultados na interface;
+- rate limiting: contadores por janela persistidos no PostgreSQL com identificadores protegidos por HMAC;
+- login: máximo inicial de 8 tentativas por combinação anonimizada de origem e e-mail em 15 minutos;
+- recuperação: resposta uniforme, limite de 3 solicitações por hora, token armazenado somente por hash, expiração de 30 minutos e uso único;
+- troca de senha: invalida todas as sessões do usuário na mesma transação;
+- CSRF: token derivado da sessão e comparação em tempo constante nas operações financeiras e de logout;
+- revogação administrativa: exige administrador da plataforma, CSRF, confirmação do e-mail, motivo e auditoria;
+- e-mail: recuperação por Resend somente com chave e remetente exclusivos, idempotência e sem logs do link;
+- secret scan: padrões de chaves privadas e credenciais conhecidas bloqueiam o CI antes do merge;
 - auditoria de dependências: deve ser repetida no CI e antes de cada implantação.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
@@ -46,6 +54,8 @@ O resultado de uma auditoria representa apenas o instante em que foi executada e
 - tokens e senhas não devem aparecer em logs, issues, commits ou mensagens;
 - `OPENAI_API_KEY` é segredo exclusivo do TapLink, nunca armazenado no banco nem exibido no painel;
 - `ASAAS_API_KEY` e `ASAAS_WEBHOOK_SECRET` devem ser exclusivos do TapLink e de cada ambiente;
+- `RATE_LIMIT_SECRET` deve ser exclusivo; na ausência, o sistema usa `SESSION_SECRET` como fallback controlado;
+- `RESEND_API_KEY` e `MAIL_FROM` devem pertencer ao domínio do produto e nunca ser reutilizados do LoopClub;
 - banco, cache e armazenamento não podem publicar portas diretamente na internet.
 
 ## Skills e agentes de desenvolvimento
@@ -89,11 +99,9 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 
 ## Pendências antes de clientes reais
 
-- rate limiting distribuído no login e APIs sensíveis;
-- recuperação de senha;
 - segundo fator para painel interno;
-- proteção CSRF adicional para operações críticas;
-- expiração e revogação administrativa de sessões;
+- expandir CSRF para todas as mutações não financeiras;
+- rate limiting nos endpoints públicos de Wi-Fi, eventos e arquivos;
 - antivírus e quarentena para tipos de arquivo futuros além de imagens;
 - limitação de requisições no endpoint público de Wi-Fi;
 - rate limiting distribuído no endpoint público de eventos;

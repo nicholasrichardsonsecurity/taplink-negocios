@@ -1,4 +1,5 @@
 import { requireSession } from "@/lib/auth/session";
+import { csrfToken } from "@/lib/security";
 
 export default async function Dashboard() {
   const s = await requireSession();
@@ -14,7 +15,7 @@ export default async function Dashboard() {
           <a href="/dashboard/page-editor">Página pública</a>
           <a href="/dashboard/organizations">Trocar empresa</a>
           {s.platformRole === "platform_admin" && (
-            <a href="/admin/operations">Operação da plataforma</a>
+            <><a href="/admin/operations">Operação da plataforma</a><a href="/admin/security">Segurança e sessões</a></>
           )}
           <a>Placas e NFC</a>
           <a href="/dashboard/analytics">Analytics</a>
@@ -23,6 +24,7 @@ export default async function Dashboard() {
           <a href="/dashboard/billing">Plano e cobrança</a>
         </nav>
         <form action="/api/auth/logout" method="post">
+          <input type="hidden" name="csrf" value={csrfToken(s.sessionTokenHash)} />
           <button>Sair</button>
         </form>
       </aside>

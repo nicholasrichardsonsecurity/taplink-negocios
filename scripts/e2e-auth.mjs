@@ -14,6 +14,8 @@ assert.equal(repeated.status,409,"Bootstrap deveria ser de uso único");
 const invalid=await fetch(`${url}/api/auth/login`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({...credentials,password:"senha-incorreta-123"})});
 assert.equal(invalid.status,401,"Senha incorreta deveria ser rejeitada");
 
+const resetRequest=await fetch(`${url}/api/auth/password-reset/request`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:"conta-inexistente@example.test"})});assert.equal(resetRequest.status,200);assert.match((await resetRequest.json()).message,/Se o e-mail estiver cadastrado/);
+
 const login=await fetch(`${url}/api/auth/login`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(credentials)});
 assert.equal(login.status,200,`Login falhou: ${await login.text()}`);
 const cookie=login.headers.get("set-cookie")?.split(";",1)[0];
@@ -39,6 +41,8 @@ const eventHeaders={"content-type":"application/json","user-agent":"taplink-ci-b
 const analytics=await fetch(`${url}/dashboard/analytics?days=90`,{headers:{cookie}});assert.equal(analytics.status,200);const analyticsHtml=await analytics.text();assert.match(analyticsHtml,/Eventos anônimos/);assert.match(analyticsHtml,/Avaliar/);assert.doesNotMatch(analyticsHtml,/>90 dias</);const csvExport=await fetch(`${url}/api/analytics/export?days=30`,{headers:{cookie}});assert.equal(csvExport.status,403,"CSV deve respeitar o plano no backend");
 const billing=await fetch(`${url}/dashboard/billing`,{headers:{cookie}});assert.equal(billing.status,200);const billingHtml=await billing.text();assert.match(billingHtml,/R\$ 39,90|R\$ 39,90/);assert.match(billingHtml,/ambiente sandbox/);
 const operations=await fetch(`${url}/admin/operations`,{headers:{cookie}});assert.equal(operations.status,200);const operationsHtml=await operations.text();assert.match(operationsHtml,/Controle sem planilha paralela/);assert.match(operationsHtml,/Empresa CI/);
+const securityAdmin=await fetch(`${url}/admin/security`,{headers:{cookie}});assert.equal(securityAdmin.status,200);assert.match(await securityAdmin.text(),/Sessões sob controle/);
+const csrfBlocked=await fetch(`${url}/api/admin/billing`,{method:"POST",headers:{cookie,"content-type":"application/x-www-form-urlencoded",origin:url},body:new URLSearchParams({organizationId:"00000000-0000-0000-0000-000000000000",action:"cancel",reason:"tentativa sem csrf",confirmation:"empresa-ci"}),redirect:"manual"});assert.equal(csrfBlocked.status,403,"Operação financeira sem CSRF deveria ser bloqueada");
 const draftSettings={...settings,tagline:"Alteração ainda em rascunho."};
 const draft=await fetch(`${url}/api/page-settings`,{method:"PUT",headers:{"content-type":"application/json",cookie},body:JSON.stringify({settings:draftSettings,publish:false})});assert.equal(draft.status,200);
 const editorState=await fetch(`${url}/api/page-settings`,{headers:{cookie}});assert.equal((await editorState.json()).settings.tagline,"Alteração ainda em rascunho.");

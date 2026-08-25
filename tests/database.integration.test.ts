@@ -1,13 +1,17 @@
 import test,{after} from "node:test";
 import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
 import {eq} from "drizzle-orm";
 import {db,sql} from "../packages/database/client";
-import {analyticsEvents,auditLogs,billingPayments,billingPlans,memberships,organizationSubscriptions,organizations,publicPages,users} from "../packages/database/schema";
+import {analyticsEvents,auditLogs,billingPayments,billingPlans,memberships,organizationSubscriptions,organizations,passwordResetTokens,publicPages,sessions,users} from "../packages/database/schema";
 import {getTenantMembership,requireTenantMembership} from "../packages/database/tenant";
 import {hashPassword} from "../lib/auth/password";
 import {decryptSecret} from "../lib/crypto/secrets";
 import {processAsaasWebhook} from "../lib/billing-service";
 import {applySubscriptionAdminAction} from "../lib/admin-billing-service";
+import {consumePasswordReset} from "../lib/password-reset";
+import {consumeRateLimit,createResetToken,hashResetToken} from "../lib/security";
+import {verifyPassword} from "../lib/auth/password";
 
 after(()=>sql.end());
 
@@ -57,4 +61,24 @@ test("altera plano interno com confirmação operacional auditável",async t=>{
  const [audit]=await db.select().from(auditLogs).where(eq(auditLogs.entityId,subscription.id));
  assert.equal(audit.action,"platform.billing.change_plan");
  assert.match(audit.metadataJson,/Ajuste aprovado/);
+});
+
+test("limita tentativas de forma persistente entre requisições",async()=>{
+ const identity=crypto.randomUUID();
+ const first=await consumeRateLimit({scope:"integration",identity,limit:2,windowMs:60000});
+ const second=await consumeRateLimit({scope:"integration",identity,limit:2,windowMs:60000});
+ const third=await consumeRateLimit({scope:"integration",identity,limit:2,windowMs:60000});
+ assert.equal(first.allowed,true);assert.equal(second.allowed,true);assert.equal(third.allowed,false);
+});
+
+test("redefine senha uma vez e revoga todas as sessões",async t=>{
+ const suffix=crypto.randomUUID().slice(0,8),token=createResetToken();
+ const [user]=await db.insert(users).values({name:"Reset CI",email:`reset-${suffix}@example.test`,passwordHash:await hashPassword("senha-antiga-123")}).returning();
+ t.after(async()=>{await db.delete(users).where(eq(users.id,user.id))});
+ await db.insert(sessions).values({userId:user.id,tokenHash:createHash("sha256").update(`session-${suffix}`).digest("hex"),expiresAt:new Date(Date.now()+86400000)});
+ await db.insert(passwordResetTokens).values({userId:user.id,tokenHash:hashResetToken(token),expiresAt:new Date(Date.now()+60000)});
+ assert.equal(await consumePasswordReset(token,"senha-nova-segura-123"),true);
+ assert.equal(await consumePasswordReset(token,"outra-senha-segura-123"),false);
+ const [updated]=await db.select().from(users).where(eq(users.id,user.id));assert.equal(await verifyPassword("senha-nova-segura-123",updated.passwordHash),true);
+ assert.equal((await db.select().from(sessions).where(eq(sessions.userId,user.id))).length,0);
 });

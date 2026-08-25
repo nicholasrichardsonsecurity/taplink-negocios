@@ -5,6 +5,7 @@ import { ensureAsaasCustomer, ensureAsaasSubscription } from "@/lib/asaas";
 import { seedPlans } from "@/lib/billing-service";
 import { db } from "@/packages/database/client";
 import { auditLogs, billingPlans, organizationSubscriptions } from "@/packages/database/schema";
+import { validCsrf } from "@/lib/security";
 
 const schema = z.object({ plan: z.enum(["essencial", "negocios", "premium"]), name: z.string().trim().min(3).max(120), cpfCnpj: z.string().transform(v => v.replace(/\D/g, "")).refine(v => [11, 14].includes(v.length), "Documento inválido"), email: z.string().email().max(180), phone: z.string().max(24).optional(), billingType: z.enum(["PIX", "BOLETO"]) });
 
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
   if (!session) return Response.json({ error: "Autenticação necessária." }, { status: 401 });
   if (session.role !== "owner") return Response.json({ error: "Somente o proprietário pode contratar um plano." }, { status: 403 });
   const form = await request.formData();
+  if (!validCsrf(request, session.sessionTokenHash, form.get("csrf"))) return Response.json({ error: "Validação de segurança expirada." }, { status: 403 });
   const parsed = schema.safeParse(Object.fromEntries(form));
   if (!parsed.success) return Response.redirect(new URL("/dashboard/billing?error=dados", request.url), 303);
   await seedPlans();

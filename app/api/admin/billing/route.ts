@@ -4,6 +4,7 @@ import { applySubscriptionAdminAction } from "@/lib/admin-billing-service";
 import { db } from "@/packages/database/client";
 import { eq } from "drizzle-orm";
 import { organizations } from "@/packages/database/schema";
+import { validCsrf } from "@/lib/security";
 
 const schema = z.object({
   organizationId: z.uuid(),
@@ -16,7 +17,9 @@ const schema = z.object({
 export async function POST(request: Request) {
   const session = await getSessionContext();
   if (!session || session.platformRole !== "platform_admin") return Response.json({ error: "Acesso administrativo necessário." }, { status: 403 });
-  const parsed = schema.safeParse(Object.fromEntries(await request.formData().catch(() => new FormData())));
+  const form = await request.formData().catch(() => new FormData());
+  if (!validCsrf(request, session.sessionTokenHash, form.get("csrf"))) return Response.json({ error: "Validação de segurança expirada." }, { status: 403 });
+  const parsed = schema.safeParse(Object.fromEntries(form));
   if (!parsed.success) return Response.json({ error: "Operação administrativa inválida." }, { status: 400 });
   const [organization] = await db.select({ slug: organizations.slug }).from(organizations).where(eq(organizations.id, parsed.data.organizationId)).limit(1);
   if (!organization || parsed.data.confirmation !== organization.slug) return Response.json({ error: "Digite o identificador exato da empresa para confirmar." }, { status: 400 });
