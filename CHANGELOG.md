@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0 — 25/08/2026
+
+- editor white-label autenticado criado;
+- identidade, cores, textos, links, Google, cardápio e localização configuráveis;
+- Wi-Fi cifrado com AES-256-GCM antes da persistência;
+- três atalhos inferiores configuráveis e sem repetição;
+- rascunho separado da versão publicada;
+- página dinâmica `/p/[slug]` implementada;
+- senha do Wi-Fi removida do HTML inicial e entregue sob demanda;
+- perfil analista impedido de editar;
+- auditoria de salvamento e publicação incluída;
+- migration `0001_lucky_masked_marvel.sql` gerada;
+- sete testes unitários aprovados e fluxo E2E ampliado.
+
 ## 0.2.2 — 25/08/2026
 
 - `README.md` sincronizado com a conclusão da Missão 1.2;
