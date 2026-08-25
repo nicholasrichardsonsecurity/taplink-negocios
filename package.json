@@ -1,0 +1,13 @@
+{
+  "name": "taplink-negocios",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "SaaS multiempresa e white-label proprietário de Nicholas Richardson e GigaNetPe Telecom",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check:ownership": "node scripts/check-ownership.mjs"
+  }
+}
