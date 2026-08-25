@@ -19,6 +19,11 @@
 - deduplicação: eventos iguais do mesmo visitante anônimo são consolidados por 15 minutos;
 - retenção: `ANALYTICS_RETENTION_DAYS` entre 30 e 730 dias, padrão de 395;
 - exportação: disponível somente para usuário autenticado na empresa ativa;
+- insights: o motor local usa apenas agregados e permanece disponível sem IA externa;
+- IA externa: desligada por padrão, autorizada pelo proprietário e limitada por empresa;
+- minimização: payload do modelo exclui IP, user-agent, hash de visitante, Wi-Fi e segredos;
+- supervisão: resultado generativo exige aprovação ou rejeição humana e gera auditoria;
+- resiliência: erro, ausência de chave ou estouro de orçamento aciona fallback determinístico;
 - auditoria de dependências: deve ser repetida no CI e antes de cada implantação.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
@@ -30,6 +35,7 @@ O resultado de uma auditoria representa apenas o instante em que foi executada e
 - `BOOTSTRAP_TOKEN` deve ser aleatório, de uso inicial e removido ou rotacionado após a inicialização;
 - credenciais do LoopClub não podem ser reutilizadas;
 - tokens e senhas não devem aparecer em logs, issues, commits ou mensagens;
+- `OPENAI_API_KEY` é segredo exclusivo do TapLink, nunca armazenado no banco nem exibido no painel;
 - banco, cache e armazenamento não podem publicar portas diretamente na internet.
 
 ## Skills e agentes de desenvolvimento
@@ -81,6 +87,9 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 - antivírus e quarentena para tipos de arquivo futuros além de imagens;
 - limitação de requisições no endpoint público de Wi-Fi;
 - rate limiting distribuído no endpoint público de eventos;
+- rate limiting distribuído na geração de insights, além do orçamento persistido;
+- reserva transacional de orçamento para alta concorrência antes da ativação comercial da IA;
+- política de retenção e avaliação periódica dos relatórios generativos;
 - agendamento e monitoramento operacional do expurgo de analytics;
 - headers CSP definitivos;
 - logs estruturados e alertas;

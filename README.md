@@ -52,6 +52,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 | Missão 1.3 — editor white-label | Concluída | Rascunho, publicação, Wi-Fi cifrado e página por slug |
 | Missão 1.4 — arquivos e gestão | Concluída | Upload, QR Code e painel multiempresa |
 | Missão 1.5 — analytics e eventos | Concluída | Eventos anônimos, gráficos, origens e CSV |
+| Missão 1.6 — inteligência opcional | Concluída | Insights locais, IA opcional, orçamento e aprovação |
 | Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
 ## Funcionalidades implementadas
@@ -76,6 +77,10 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - analytics anônimo com visualizações, visitantes, ações e origens;
 - deduplicação em janelas de 15 minutos e retenção configurável;
 - períodos de 7, 30 e 90 dias e exportação CSV;
+- resumo semanal e recomendações determinísticas baseadas em evidências;
+- complemento generativo opcional, desligado por padrão e sem dados pessoais;
+- limites mensais de requisições e tokens isolados por empresa;
+- histórico auditável e aprovação ou rejeição humana;
 - migrations PostgreSQL versionadas;
 - CI com banco real e testes ponta a ponta.
 
@@ -123,6 +128,7 @@ taplink-negocios/
 | `/dashboard/page-editor` | Autenticado | Editor white-label |
 | `/dashboard/organizations` | Autenticado | Seleção da empresa ativa |
 | `/dashboard/analytics` | Autenticado | Métricas e gráficos da empresa |
+| `/dashboard/insights` | Autenticado | Resumo, recomendações e orçamento de IA |
 | `/admin/companies` | Administrador da plataforma | Cadastro de empresas |
 | `/p/[slug]` | Público | Página publicada |
 | `/api/health` | Técnico | Saúde da aplicação e banco |
@@ -211,6 +217,10 @@ Nenhum deploy será realizado antes da auditoria definida em [`docs/SERVER_ISOLA
 
 NFC, QR Code, Wi-Fi, editor, analytics e páginas não dependerão de API externa para funcionar.
 
+### Inteligência opcional
+
+O motor de regras produz o relatório mesmo sem conexão ou chave externa. Quando autorizado pelo proprietário, `AI_INSIGHTS_ENABLED=true` e `OPENAI_API_KEY` permitem um complemento pela Responses API. Somente contagens agregadas são enviadas; hashes de visitantes, IP, user-agent, senha de Wi-Fi e segredos ficam fora do payload. O resultado generativo entra como pendente e exige aprovação humana.
+
 ## Agentes e aceleração
 
 O desenvolvimento poderá usar skills locais para revisar escopo, dependências e histórico Git. Recursos comerciais de IA serão opcionais e entrarão depois do analytics convencional.
@@ -231,13 +241,13 @@ Consulte [`SECURITY.md`](SECURITY.md).
 
 ## Próxima missão
 
-### Missão 1.6 — inteligência opcional
+### Missão 1.7 — planos e cobrança recorrente
 
-- resumos automáticos baseados nos analytics;
-- recomendações de atalhos e campanhas;
-- orçamento e limites de IA por empresa;
-- fallback integral sem modelo generativo;
-- avaliação de qualidade e aprovação humana.
+- planos comerciais e limites de recursos;
+- cliente e assinatura no Asaas sandbox;
+- webhook idempotente e auditável;
+- área financeira do estabelecimento;
+- régua de inadimplência sem apagar página ou dados.
 
 ## Titularidade
 

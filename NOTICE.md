@@ -20,6 +20,8 @@ A Missão 1.4 adicionou upload de identidade visual, QR Wi-Fi, seleção multiem
 
 A Missão 1.5 adicionou estatísticas anônimas. Não são persistidos endereço IP, user-agent, nome, contato ou identificador estável do visitante. A política de privacidade e a base legal deverão ser revisadas antes do piloto com público real.
 
+A Missão 1.6 adicionou relatórios e recomendações locais, com uso opcional da OpenAI Responses API. Nenhum código do repositório de referências `awesome-llm-apps` foi incorporado. A integração permanece desligada por padrão, envia somente métricas agregadas, aplica orçamento por empresa e não autoriza publicação automática de conteúdo.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

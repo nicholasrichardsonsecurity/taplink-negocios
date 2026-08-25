@@ -18,6 +18,7 @@ export default async function Dashboard() {
           )}
           <a>Placas e NFC</a>
           <a href="/dashboard/analytics">Analytics</a>
+          <a href="/dashboard/insights">Insights</a>
           <a>Equipe</a>
           <a>Plano e cobrança</a>
         </nav>
@@ -40,11 +41,10 @@ export default async function Dashboard() {
           </div>
         </header>
         <div className="welcome">
-          <small>MISSÃO 1.5</small>
-          <h2>Decisões com dados reais.</h2>
+          <small>MISSÃO 1.6</small>
+          <h2>Dados que viram próximos passos.</h2>
           <p>
-            Acompanhe visualizações, origens e ações sem identificar seus
-            visitantes.
+            Receba recomendações explicáveis, com orçamento e aprovação humana.
           </p>
         </div>
         <div className="metrics">
@@ -74,6 +74,7 @@ export default async function Dashboard() {
             Abrir editor
           </a>
         </div>
+        <div className="next-card" style={{marginTop: 15}}><div><small>INSIGHTS</small><h3>Entenda a semana em segundos</h3><p>Relatório local sempre disponível e IA generativa opcional.</p></div><a className="dashboard-cta" href="/dashboard/insights">Abrir insights</a></div>
       </section>
     </main>
   );

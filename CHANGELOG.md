@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0 — 25/08/2026
+
+- painel `/dashboard/insights` com resumo semanal e recomendações criado;
+- motor determinístico independente de provedor externo implementado;
+- comparação entre os últimos sete dias e o período anterior adicionada;
+- complemento pela OpenAI Responses API criado e desligado por padrão;
+- payload restrito a contagens agregadas, sem identificadores ou segredos;
+- limites de requisições e tokens isolados por empresa adicionados;
+- fallback automático para regras locais em falha, ausência de chave ou limite atingido;
+- aprovação e rejeição humana com trilha de auditoria implementadas;
+- migration `0004_supreme_beast.sql` e quatro testes de insights adicionados.
+
 ## 0.5.0 — 25/08/2026
 
 - eventos públicos de visualização e ação adicionados;

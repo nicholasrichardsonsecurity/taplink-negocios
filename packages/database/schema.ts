@@ -1,6 +1,7 @@
 import {
   boolean,
   index,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -36,6 +37,14 @@ export const analyticsSource = pgEnum("analytics_source", [
   "qr",
   "direct",
   "unknown",
+]);
+export const insightRunStatus = pgEnum("insight_run_status", [
+  "deterministic",
+  "generated",
+  "fallback",
+  "failed",
+  "approved",
+  "rejected",
 ]);
 
 export const organizations = pgTable("organizations", {
@@ -202,4 +211,48 @@ export const analyticsEvents = pgTable(
     index("analytics_events_org_time_idx").on(t.organizationId, t.occurredAt),
     index("analytics_events_page_type_idx").on(t.publicPageId, t.eventType),
   ],
+);
+
+export const organizationAiSettings = pgTable("organization_ai_settings", {
+  organizationId: uuid("organization_id")
+    .primaryKey()
+    .references(() => organizations.id, { onDelete: "cascade" }),
+  enabled: boolean("enabled").notNull().default(false),
+  monthlyRequestLimit: integer("monthly_request_limit").notNull().default(20),
+  monthlyTokenLimit: integer("monthly_token_limit").notNull().default(50000),
+  requiresApproval: boolean("requires_approval").notNull().default(true),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const insightRuns = pgTable(
+  "insight_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    createdBy: uuid("created_by").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    status: insightRunStatus("status").notNull().default("deterministic"),
+    provider: text("provider").notNull().default("rules"),
+    model: text("model"),
+    promptVersion: text("prompt_version").notNull().default("insights-v1"),
+    periodDays: integer("period_days").notNull().default(7),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
+    snapshotJson: text("snapshot_json").notNull(),
+    outputJson: text("output_json").notNull(),
+    errorCode: text("error_code"),
+    reviewedBy: uuid("reviewed_by").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("insight_runs_org_created_idx").on(t.organizationId, t.createdAt)],
 );
