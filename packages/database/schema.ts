@@ -27,6 +27,16 @@ export const mediaVisibility = pgEnum("media_visibility", [
   "public",
   "private",
 ]);
+export const analyticsEventType = pgEnum("analytics_event_type", [
+  "page_view",
+  "action_click",
+]);
+export const analyticsSource = pgEnum("analytics_source", [
+  "nfc",
+  "qr",
+  "direct",
+  "unknown",
+]);
 
 export const organizations = pgTable("organizations", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -167,4 +177,29 @@ export const auditLogs = pgTable(
       .defaultNow(),
   },
   (t) => [index("audit_org_created_idx").on(t.organizationId, t.createdAt)],
+);
+
+export const analyticsEvents = pgTable(
+  "analytics_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+    publicPageId: uuid("public_page_id")
+      .notNull()
+      .references(() => publicPages.id, { onDelete: "cascade" }),
+    eventType: analyticsEventType("event_type").notNull(),
+    action: text("action"),
+    source: analyticsSource("source").notNull().default("unknown"),
+    visitorHash: text("visitor_hash").notNull(),
+    dedupeKey: text("dedupe_key").notNull().unique(),
+    occurredAt: timestamp("occurred_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("analytics_events_org_time_idx").on(t.organizationId, t.occurredAt),
+    index("analytics_events_page_type_idx").on(t.publicPageId, t.eventType),
+  ],
 );

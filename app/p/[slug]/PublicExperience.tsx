@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { PageSettings } from "@/lib/page-settings";
 
 const valid = (url: string) => (/^https?:\/\//i.test(url) ? url : "#");
@@ -13,7 +13,29 @@ export default function PublicExperience({
   const [wifi, setWifi] = useState(false);
   const [wifiPassword, setWifiPassword] = useState<string | null>(null);
   const [menu, setMenu] = useState(false);
+  const source = useMemo(() => {
+    if (typeof window === "undefined") return "unknown";
+    const value = new URLSearchParams(window.location.search).get("src");
+    return ["nfc", "qr", "direct"].includes(value ?? "") ? value : "direct";
+  }, []);
+  function track(eventType: "page_view" | "action_click", action?: string) {
+    const body = JSON.stringify({ eventType, action, source });
+    const url = `/api/public/${slug}/events`;
+    if (navigator.sendBeacon)
+      navigator.sendBeacon(url, new Blob([body], { type: "application/json" }));
+    else
+      fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body,
+        keepalive: true,
+      }).catch(() => {});
+  }
+  useEffect(() => {
+    track("page_view");
+  }, []);
   async function action(label: string) {
+    track("action_click", label);
     if (label === "Wi-Fi") {
       setWifi(true);
       if (wifiPassword === null) {
@@ -186,7 +208,11 @@ export default function PublicExperience({
                 alt={`QR Code para conectar ao Wi-Fi ${s.wifiSsid}`}
                 width={220}
                 height={220}
-                style={{ display: "block", margin: "16px auto", borderRadius: 16 }}
+                style={{
+                  display: "block",
+                  margin: "16px auto",
+                  borderRadius: 16,
+                }}
               />
             )}
             {wifiPassword && (
@@ -196,7 +222,10 @@ export default function PublicExperience({
                 Copiar senha
               </button>
             )}
-            <small>Aponte a câmera para o QR. A confirmação final depende do aparelho.</small>
+            <small>
+              Aponte a câmera para o QR. A confirmação final depende do
+              aparelho.
+            </small>
           </div>
         </div>
       )}

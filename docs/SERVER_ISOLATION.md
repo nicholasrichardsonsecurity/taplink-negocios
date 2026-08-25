@@ -15,6 +15,7 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - deploy bloqueado até concluir a auditoria somente leitura.
 - a estratégia de agentes não altera o servidor: nenhum skill, modelo ou serviço de IA será instalado no Debian nesta etapa.
 - migrations `0001_lucky_masked_marvel.sql` e `0002_smart_garia.sql` criadas; ainda não aplicadas no Debian;
+- migration `0003_fluffy_tarot.sql` criada para analytics; ainda não aplicada no Debian;
 - MinIO passou a ser requisito da aplicação para uploads, sempre restrito à rede interna.
 
 ## Regra de ouro
@@ -110,7 +111,8 @@ Antes do primeiro deploy:
 - aplicação acessível pelo proxy ou túnel autorizado;
 - `/api/health` respondendo com banco conectado;
 - migration aplicada exatamente uma vez;
-- migrations `0000`, `0001` e `0002` registradas na tabela de controle do Drizzle;
+- migrations `0000`, `0001`, `0002` e `0003` registradas na tabela de controle do Drizzle;
+- expurgo de analytics executado por agendamento exclusivo do projeto e com logs sem dados pessoais;
 - upload e recuperação de uma imagem de teste confirmados sem expor a porta do MinIO;
 - logs sem segredos;
 - reinício automático validado somente nos containers TapLink;
