@@ -7,7 +7,11 @@
 - portas do LoopClub confirmadas em loopback e PostgreSQL sem publicação no host;
 - porta padrão do TapLink alterada de `3300` para `3400` para eliminar colisão;
 - rede de saída do serviço web separada da rede interna exclusiva do PostgreSQL e MinIO;
-- deploy mantido bloqueado até confirmar firewall, Caddy, backup e rollback.
+- Caddy validado e porta `3400` confirmada livre em segunda coleta somente leitura;
+- ausência de firewall de host comprovado e de backup próprio do TapLink registrada como bloqueio para publicação;
+- procedimento exclusivo de backup, restauração e rollback documentado;
+- homologação privada por túnel SSH definida sem alterar o Caddy;
+- deploy público mantido bloqueado até implantar firewall, backup e testar restauração/rollback.
 
 ## 0.9.1 — 25/08/2026
 

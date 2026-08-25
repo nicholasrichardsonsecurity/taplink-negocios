@@ -14,12 +14,15 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - LoopClub confirmado em `127.0.0.1:3100`, `127.0.0.1:3200` e `127.0.0.1:3300`; seus bancos PostgreSQL não publicam porta no host;
 - containers existentes consumiam aproximadamente 375 MiB de memória e CPU praticamente ociosa durante a coleta;
 - porta `3400` selecionada para o TapLink, ligada exclusivamente a `127.0.0.1`;
+- segunda coleta confirmou a porta `3400` livre, configuração válida do Caddy e proxies existentes limitados ao LoopClub;
+- nenhuma regra UFW foi evidenciada e o `nftables` exibiu somente as cadeias geradas pelo Docker, sem política de entrada do host comprovada;
+- backup automatizado existente pertence ao LoopClub (`loopclub-backup.timer`) e não cobre o TapLink;
 - nenhum comando do TapLink executado no Debian;
 - nenhum container, volume, diretório, usuário ou porta criado;
 - LoopClub permanece intocado;
 - Compose do TapLink validado estruturalmente;
 - aplicação e migration validadas no GitHub Actions com PostgreSQL descartável;
-- deploy permanece bloqueado até confirmar firewall, configuração aplicável do Caddy, política de backup e procedimento de rollback;
+- deploy público permanece bloqueado até definir firewall, implantar backup próprio e testar restauração e rollback;
 - a estratégia de agentes não altera o servidor: nenhum skill, modelo ou serviço de IA será instalado no Debian nesta etapa.
 - migrations `0001_lucky_masked_marvel.sql` e `0002_smart_garia.sql` criadas; ainda não aplicadas no Debian;
 - migration `0003_fluffy_tarot.sql` criada para analytics; ainda não aplicada no Debian;
@@ -83,15 +86,29 @@ Também registrar, sem revelar segredos:
 
 ## Resultado e pendências da auditoria
 
-O gate de capacidade e colisão de portas foi aprovado. A coleta comprovou recursos suficientes para a homologação e confirmou que `3400` estava livre no momento da auditoria.
+O gate de capacidade, colisão de portas e validade do proxy foi aprovado. A coleta comprovou recursos suficientes para a homologação, confirmou que `3400` estava livre e validou o Caddy sem alterar sua configuração.
 
-Ainda faltam evidências somente leitura antes do primeiro deploy:
+O firewall do host não pode ser considerado aprovado: não houve saída do UFW e o conjunto `nftables` apresentado contém apenas regras do Docker. Isso não expõe as portas loopback dos containers, mas deixa a proteção dependente dos serviços em escuta e da configuração do provedor da VM.
 
-- regras efetivas de firewall;
-- trecho aplicável da configuração do Caddy, sem segredos;
-- política e destino dos backups;
-- teste documentado de restauração e rollback;
+O backup também permanece reprovado para o TapLink: o timer encontrado protege o LoopClub, não o novo projeto.
+
+Ainda faltam controles antes da publicação externa:
+
+- política de firewall do host ou do provedor da VM permitindo somente `22`, `80` e `443` conforme origem e necessidade;
+- timer e destino de backup exclusivos do TapLink;
+- teste de restauração em ambiente descartável;
+- rollback do aplicativo validado sem afetar o LoopClub;
 - definição do domínio antes de login público, webhook ou cobrança real.
+
+## Homologação privada autorizável
+
+Antes do domínio, o TapLink poderá ser testado exclusivamente por túnel SSH, mantendo `3400` em loopback:
+
+```bash
+ssh -L 3400:127.0.0.1:3400 root@190.89.151.9
+```
+
+Com o túnel ativo, o operador acessará `http://127.0.0.1:3400` no próprio computador. Essa autorização não inclui dados reais, cobrança real, webhook público nem alteração do Caddy.
 
 ## Portas
 
