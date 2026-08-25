@@ -10,3 +10,5 @@
 8. Toda rota administrativa deve aplicar autenticação, autorização e auditoria.
 9. Segredos devem existir apenas em variáveis de ambiente ou cofre apropriado.
 10. Atualizar a documentação e o changelog a cada marco concluído.
+11. Em toda missão, revisar obrigatoriamente `README.md`, `SECURITY.md`, `NOTICE.md`, `docs/SERVER_ISOLATION.md` e `CHANGELOG.md`, mesmo quando a conclusão for registrar que não houve impacto.
+12. Não declarar deploy, teste com banco real, segurança ou isolamento sem evidência verificável correspondente.
