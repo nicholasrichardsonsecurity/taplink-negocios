@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2 — 25/08/2026
+
+- `README.md` sincronizado com a conclusão da Missão 1.2;
+- `SECURITY.md` ampliado com controles atuais, pendências e critérios de deploy;
+- `NOTICE.md` atualizado com estado da implementação e controle de contribuições;
+- `docs/SERVER_ISOLATION.md` atualizado com bloqueios, proibições e aceite do primeiro deploy;
+- revisão obrigatória desses documentos adicionada às regras permanentes do projeto.
+
 ## 0.2.1 — 25/08/2026
 
 - testes unitários da autenticação adicionados;
