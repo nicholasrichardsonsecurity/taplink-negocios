@@ -13,6 +13,7 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - Compose do TapLink validado estruturalmente;
 - aplicação e migration validadas no GitHub Actions com PostgreSQL descartável;
 - deploy bloqueado até concluir a auditoria somente leitura.
+- a estratégia de agentes não altera o servidor: nenhum skill, modelo ou serviço de IA será instalado no Debian nesta etapa.
 - migrations `0001_lucky_masked_marvel.sql` e `0002_smart_garia.sql` criadas; ainda não aplicadas no Debian;
 - MinIO passou a ser requisito da aplicação para uploads, sempre restrito à rede interna.
 
