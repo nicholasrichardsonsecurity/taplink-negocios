@@ -12,3 +12,8 @@
 10. Atualizar a documentação e o changelog a cada marco concluído.
 11. Em toda missão, revisar obrigatoriamente `README.md`, `SECURITY.md`, `NOTICE.md`, `docs/SERVER_ISOLATION.md` e `CHANGELOG.md`, mesmo quando a conclusão for registrar que não houve impacto.
 12. Não declarar deploy, teste com banco real, segurança ou isolamento sem evidência verificável correspondente.
+13. Antes de cada PR, revisar o diff contra a intenção da missão; usar `scope-creep-detector` quando estiver instalado.
+14. Quando um manifesto de dependências mudar, executar a validação do projeto e revisar com `dependency-doctor` quando disponível.
+15. Antes de refatorações sensíveis, consultar o histórico Git e usar `commit-archaeologist` quando necessário.
+16. Skills de terceiros exigem leitura dos scripts, revisão de licença, versão fixada e registro de atribuição antes de serem adicionados ao projeto.
+17. Agentes de análise não podem ler `.env`, credenciais, backups ou recursos do LoopClub.

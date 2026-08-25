@@ -8,6 +8,8 @@ Antes da contratação de funcionários, freelancers, sócios técnicos ou forne
 
 Componentes de terceiros serão relacionados em `THIRD_PARTY_NOTICES.md` antes de cada lançamento comercial.
 
+O repositório `Shubhamsaboo/awesome-llm-apps`, licenciado sob Apache-2.0, foi avaliado como referência. Nesta atualização, nenhuma implementação dele foi incorporada ao runtime do TapLink. Qualquer skill ou código copiado no futuro deverá preservar os avisos aplicáveis e ser registrado antes da integração.
+
 ## Estado da implementação
 
 A Missão 1.2 estabeleceu o núcleo autenticado e multiempresa. O código foi validado por integração automatizada com PostgreSQL real, mas ainda não constitui lançamento comercial nem autorização para tratamento de dados reais.
