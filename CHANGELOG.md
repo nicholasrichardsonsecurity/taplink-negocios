@@ -1,5 +1,13 @@
 # Changelog
 
+## Não lançado
+
+- estratégia de uso de IA e agentes documentada;
+- `scope-creep-detector`, `dependency-doctor` e `commit-archaeologist` aprovados como aceleradores opcionais de desenvolvimento;
+- ideias de assistente, análise de dados, dashboard generativo, RAG e voz registradas para atualizações futuras;
+- instalação no Codex, Cursor, Copilot/VS Code e Claude Code documentada;
+- controles de segurança e critérios para IA comercial definidos.
+
 ## 0.4.0 — 25/08/2026
 
 - identidade visual oficial e README renovado;
