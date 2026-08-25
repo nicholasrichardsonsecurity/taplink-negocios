@@ -42,3 +42,25 @@ Leia [docs/SERVER_ISOLATION.md](docs/SERVER_ISOLATION.md) antes de qualquer aç�
 - banco e Redis não podem publicar portas no host;
 - primeiro acesso ao servidor deve ser somente leitura;
 - deploy exige backup e plano de reversão.
+
+## Desenvolvimento local
+
+```bash
+cp .env.example .env
+npm install
+npm run db:generate
+docker compose -f docker-compose.homolog.yml up -d postgres
+npm run db:migrate
+npm run dev
+```
+
+O primeiro proprietário é criado uma única vez por `POST /api/auth/bootstrap`, usando `BOOTSTRAP_TOKEN`. Depois que existir um usuário, o endpoint recusa novas inicializações.
+
+## Rotas iniciais
+
+- `/`: apresentação;
+- `/login`: autenticação;
+- `/dashboard`: área protegida;
+- `/api/health`: saúde da aplicação e banco;
+- `/api/auth/bootstrap`: inicialização controlada;
+- `/api/auth/login` e `/api/auth/logout`: sessão.

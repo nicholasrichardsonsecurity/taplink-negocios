@@ -8,6 +8,28 @@
     "node": ">=22"
   },
   "scripts": {
-    "check:ownership": "node scripts/check-ownership.mjs"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "check:ownership": "node scripts/check-ownership.mjs",
+    "check": "npm run check:ownership && npm run typecheck && npm run build"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "next": "16.3.2",
+    "postgres": "3.4.9",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "drizzle-kit": "0.31.10",
+    "typescript": "5.9.3"
   }
 }
