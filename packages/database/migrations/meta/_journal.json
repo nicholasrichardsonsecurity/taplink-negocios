@@ -29,6 +29,13 @@
       "when": 1787628329630,
       "tag": "0003_fluffy_tarot",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1787630237185,
+      "tag": "0004_supreme_beast",
+      "breakpoints": true
     }
   ]
 }

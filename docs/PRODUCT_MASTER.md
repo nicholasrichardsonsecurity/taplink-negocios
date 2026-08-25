@@ -76,11 +76,13 @@ Repositório, propriedade intelectual, arquitetura, Docker, banco, autenticaçã
 
 Analytics anônimo concluído na Missão 1.5: visualizações, ações, origem NFC/QR/direta, deduplicação, períodos, gráficos, CSV e retenção configurável.
 
+Inteligência opcional concluída na Missão 1.6: resumo semanal determinístico, recomendações explicáveis, complemento generativo sem dados pessoais, orçamento por empresa, fallback e aprovação humana.
+
 ### Próximos marcos
 
 1. Missões 1.1 a 1.4: concluídas;
 2. Missão 1.5: concluída;
-3. Missão 1.6: assistente e relatórios inteligentes opcionais;
-4. Asaas e planos;
+3. Missão 1.6: concluída;
+4. Missão 1.7: Asaas e planos;
 5. painel interno completo;
 6. segurança, homologação e piloto físico.
