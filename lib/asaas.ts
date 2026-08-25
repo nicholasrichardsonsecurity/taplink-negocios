@@ -23,6 +23,14 @@ export async function cancelAsaasSubscription(id: string) {
   await request(`/subscriptions/${encodeURIComponent(id)}`, { method: "DELETE" });
 }
 
+export async function inspectAsaasSubscription(id: string) {
+  const [subscription, payments] = await Promise.all([
+    request(`/subscriptions/${encodeURIComponent(id)}`),
+    request(`/subscriptions/${encodeURIComponent(id)}/payments?limit=100`),
+  ]);
+  return { subscription, payments: Array.isArray(payments.data) ? payments.data as Json[] : [] };
+}
+
 export async function ensureAsaasCustomer(input: { organizationId: string; name: string; cpfCnpj: string; email: string; phone?: string }) {
   const externalReference = `taplink:${input.organizationId}`;
   const found = await request(`/customers?externalReference=${encodeURIComponent(externalReference)}&limit=1`) as { data?: { id?: string }[] };

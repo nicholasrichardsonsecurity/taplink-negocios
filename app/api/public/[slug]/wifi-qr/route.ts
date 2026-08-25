@@ -4,12 +4,15 @@ import { decryptSecret } from "@/lib/crypto/secrets";
 import { buildWifiUri } from "@/lib/wifi";
 import { db } from "@/packages/database/client";
 import { publicPages } from "@/packages/database/schema";
+import { consumeRateLimit, requestIp, securityHash } from "@/lib/security";
 
 export async function GET(
-  _: Request,
+  request: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
+  const rate = await consumeRateLimit({ scope: "public_wifi_qr", identity: securityHash(`${requestIp(request)}|${slug}`), limit: 15, windowMs: 60_000 });
+  if (!rate.allowed) return Response.json({ error: "Muitas solicitações." }, { status: 429, headers: { "retry-after": String(rate.retryAfterSeconds) } });
   const [page] = await db
     .select()
     .from(publicPages)
