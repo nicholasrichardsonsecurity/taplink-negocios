@@ -20,6 +20,7 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - MinIO passou a ser requisito da aplicação para uploads, sempre restrito à rede interna.
 - a integração de IA é saída HTTPS opcional da aplicação, fica desligada na homologação inicial e não cria container, banco ou porta adicional;
 - migration `0005_naive_sharon_carter.sql` criada para planos, assinaturas, cobranças e eventos; ainda não aplicada no Debian;
+- migration `0006_revise_plan_entitlements.sql` criada para separar direitos do software da quantidade de placas; ainda não aplicada no Debian;
 - Asaas permanece em sandbox e usa somente saída HTTPS; webhook não será exposto no IP sem domínio, TLS e auditoria;
 
 ## Regra de ouro
@@ -118,6 +119,7 @@ Antes do primeiro deploy:
 - migrations `0000`, `0001`, `0002` e `0003` registradas na tabela de controle do Drizzle;
 - migration `0004` registrada na tabela de controle do Drizzle;
 - migration `0005` registrada e catálogo de planos conferido;
+- migration `0006` registrada e direitos de analytics, CSV e IA conferidos;
 - credenciais Asaas exclusivas do TapLink, com ambiente confirmado como sandbox;
 - webhook Asaas publicado somente após HTTPS, token forte e teste de idempotência;
 - IA externa mantida desligada até existir segredo exclusivo, orçamento aprovado e revisão dos logs de saída;

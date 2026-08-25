@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.0 — 25/08/2026
+
+- painel `/admin/operations` com indicadores de empresas, receita histórica e webhooks criado;
+- carteira administrativa com assinatura, plano, usuários e situação consolidada;
+- mudança de plano, suspensão, reativação e cancelamento protegidos por confirmação nominal;
+- motivo obrigatório e auditoria para toda ação financeira interna;
+- atualização externa do Asaas sandbox realizada antes da alteração local;
+- planos desvinculados da quantidade de placas e reposicionados por unidades, usuários e software;
+- limites de histórico de analytics, exportação CSV e IA aplicados no backend;
+- migration `0006_revise_plan_entitlements.sql` adicionada;
+- placas, NFC, impressão UV, embalagem, frete e instalação documentados como itens separados.
+
 ## 0.7.0 — 25/08/2026
 
 - planos Essencial, Negócios e Premium definidos em R$ 39,90, R$ 69,90 e R$ 99,90;

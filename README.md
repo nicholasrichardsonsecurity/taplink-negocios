@@ -54,6 +54,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 | Missão 1.5 — analytics e eventos | Concluída | Eventos anônimos, gráficos, origens e CSV |
 | Missão 1.6 — inteligência opcional | Concluída | Insights locais, IA opcional, orçamento e aprovação |
 | Missão 1.7 — planos e cobrança | Concluída | Catálogo, trial, Asaas sandbox, webhook e financeiro |
+| Missão 1.8 — operação administrativa | Concluída | Indicadores, ações seguras, direitos de plano e auditoria |
 | Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
 ## Funcionalidades implementadas
@@ -86,6 +87,10 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - trial de 14 dias e assinatura mensal via Asaas sandbox;
 - webhook financeiro autenticado, idempotente e isolado por empresa;
 - histórico de cobranças e links de fatura validados;
+- painel operacional da plataforma com carteira, receita histórica e saúde dos webhooks;
+- alteração de plano, suspensão, reativação e cancelamento com confirmação e auditoria;
+- direitos de analytics, CSV e IA aplicados pelo backend;
+- hardware NFC comercialmente separado da assinatura do software;
 - migrations PostgreSQL versionadas;
 - CI com banco real e testes ponta a ponta.
 
@@ -136,6 +141,7 @@ taplink-negocios/
 | `/dashboard/insights` | Autenticado | Resumo, recomendações e orçamento de IA |
 | `/dashboard/billing` | Autenticado | Planos, assinatura e histórico financeiro |
 | `/admin/companies` | Administrador da plataforma | Cadastro de empresas |
+| `/admin/operations` | Administrador da plataforma | Operação financeira e indicadores |
 | `/p/[slug]` | Público | Página publicada |
 | `/api/health` | Técnico | Saúde da aplicação e banco |
 | `/api/page-settings` | Autenticado | Rascunho e publicação |
@@ -220,9 +226,11 @@ Nenhum deploy será realizado antes da auditoria definida em [`docs/SERVER_ISOLA
 
 | Plano | Mensalidade | Limites iniciais |
 |---|---:|---|
-| Essencial | R$ 39,90 | 5 placas e 2 usuários |
-| Negócios | R$ 69,90 | 20 placas, 5 usuários e analytics |
-| Premium | R$ 99,90 | 50 placas, 10 usuários e IA opcional |
+| Essencial | R$ 39,90 | 1 unidade, 2 usuários e analytics de 30 dias |
+| Negócios | R$ 69,90 | 3 unidades, 5 usuários, analytics de 90 dias e CSV |
+| Premium | R$ 99,90 | 10 unidades, 10 usuários, CSV e IA opcional |
+
+Placas, tags NFC, impressão UV, embalagem, frete e instalação são produtos físicos cobrados à parte. A quantidade de placas não determina automaticamente a mensalidade; os planos remuneram gestão, usuários, histórico, recursos e suporte do software.
 
 O trial é de 14 dias. A Missão 1.7 opera somente no sandbox do Asaas e aceita Pix ou boleto. A criação da assinatura não confirma pagamento: apenas eventos `PAYMENT_CONFIRMED` ou `PAYMENT_RECEIVED` ativam o estado financeiro. Eventos vencidos iniciam a régua de inadimplência sem excluir página ou dados.
 
@@ -260,13 +268,13 @@ Consulte [`SECURITY.md`](SECURITY.md).
 
 ## Próxima missão
 
-### Missão 1.8 — administração operacional
+### Missão 1.9 — segurança e homologação controlada
 
-- gestão interna de assinaturas e inadimplência;
-- troca de plano e cancelamento seguro;
-- limites de placas e usuários aplicados no backend;
-- conciliação e reprocessamento de webhook;
-- indicadores comerciais da plataforma.
+- rate limiting e proteção CSRF nas operações críticas;
+- recuperação de senha e revogação administrativa de sessões;
+- conciliação consultiva com o Asaas e alertas operacionais;
+- auditoria somente leitura do Debian e plano de implantação;
+- piloto físico Lisarojo após gate de segurança.
 
 ## Titularidade
 

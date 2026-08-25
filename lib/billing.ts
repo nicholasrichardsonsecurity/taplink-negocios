@@ -1,8 +1,14 @@
 export const PLAN_CATALOG = [
-  { code: "essencial", name: "Essencial", priceCents: 3990, description: "Página, Wi-Fi, Google e até 5 placas.", limits: { plates: 5, users: 2, ai: false } },
-  { code: "negocios", name: "Negócios", priceCents: 6990, description: "Analytics, insights e até 20 placas.", limits: { plates: 20, users: 5, ai: false } },
-  { code: "premium", name: "Premium", priceCents: 9990, description: "IA opcional, prioridade e até 50 placas.", limits: { plates: 50, users: 10, ai: true } },
+  { code: "essencial", name: "Essencial", priceCents: 3990, description: "Página completa e gestão essencial para uma operação.", limits: { locations: 1, users: 2, analyticsDays: 30, csv: false, ai: false, support: "standard" } },
+  { code: "negocios", name: "Negócios", priceCents: 6990, description: "Mais gestão, histórico e exportação para empresas em crescimento.", limits: { locations: 3, users: 5, analyticsDays: 90, csv: true, ai: false, support: "priority" } },
+  { code: "premium", name: "Premium", priceCents: 9990, description: "Operação multiunidade, IA opcional e atendimento prioritário.", limits: { locations: 10, users: 10, analyticsDays: 90, csv: true, ai: true, support: "priority" } },
 ] as const;
+
+export type PlanLimits = { locations: number; users: number; analyticsDays: 30 | 90; csv: boolean; ai: boolean; support: "standard" | "priority" };
+
+export function allowedAnalyticsDays(requested: number, maximum: number) {
+  return Math.min(requested, maximum) as 7 | 30 | 90;
+}
 
 export type BillingPaymentStatus = "pending" | "confirmed" | "received" | "overdue" | "refunded" | "cancelled";
 export type BillingSubscriptionStatus = "pending" | "active" | "past_due" | "suspended";

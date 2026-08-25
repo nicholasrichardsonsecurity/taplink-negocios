@@ -2,11 +2,12 @@ import test,{after} from "node:test";
 import assert from "node:assert/strict";
 import {eq} from "drizzle-orm";
 import {db,sql} from "../packages/database/client";
-import {analyticsEvents,billingPayments,billingPlans,memberships,organizationSubscriptions,organizations,publicPages,users} from "../packages/database/schema";
+import {analyticsEvents,auditLogs,billingPayments,billingPlans,memberships,organizationSubscriptions,organizations,publicPages,users} from "../packages/database/schema";
 import {getTenantMembership,requireTenantMembership} from "../packages/database/tenant";
 import {hashPassword} from "../lib/auth/password";
 import {decryptSecret} from "../lib/crypto/secrets";
 import {processAsaasWebhook} from "../lib/billing-service";
+import {applySubscriptionAdminAction} from "../lib/admin-billing-service";
 
 after(()=>sql.end());
 
@@ -40,4 +41,20 @@ test("processa webhook Asaas de forma idempotente e isolada",async t=>{
  assert.equal(first.status,200);assert.equal("duplicate" in duplicate.body&&duplicate.body.duplicate,true);
  const payments=await db.select().from(billingPayments).where(eq(billingPayments.subscriptionId,subscription.id));assert.equal(payments.length,1);assert.equal(payments[0].status,"received");
  const [updated]=await db.select().from(organizationSubscriptions).where(eq(organizationSubscriptions.id,subscription.id));assert.equal(updated.status,"active");
+});
+
+test("altera plano interno com confirmação operacional auditável",async t=>{
+ const suffix=crypto.randomUUID().slice(0,8);
+ const [org]=await db.insert(organizations).values({name:"Admin Billing CI",slug:`admin-billing-${suffix}`,status:"trial"}).returning();
+ const [actor]=await db.insert(users).values({name:"Administrador CI",email:`admin-billing-${suffix}@example.test`,passwordHash:await hashPassword("senha-de-integracao-123"),platformRole:"platform_admin"}).returning();
+ t.after(async()=>{await db.delete(organizations).where(eq(organizations.id,org.id));await db.delete(users).where(eq(users.id,actor.id))});
+ const [essential]=await db.select().from(billingPlans).where(eq(billingPlans.code,"essencial")).limit(1);
+ const [business]=await db.select().from(billingPlans).where(eq(billingPlans.code,"negocios")).limit(1);
+ const [subscription]=await db.insert(organizationSubscriptions).values({organizationId:org.id,planId:essential.id,status:"trial"}).returning();
+ await applySubscriptionAdminAction({actorUserId:actor.id,organizationId:org.id,action:"change_plan",planCode:"negocios",reason:"Ajuste aprovado no teste de integração"});
+ const [updated]=await db.select().from(organizationSubscriptions).where(eq(organizationSubscriptions.id,subscription.id));
+ assert.equal(updated.planId,business.id);
+ const [audit]=await db.select().from(auditLogs).where(eq(auditLogs.entityId,subscription.id));
+ assert.equal(audit.action,"platform.billing.change_plan");
+ assert.match(audit.metadataJson,/Ajuste aprovado/);
 });

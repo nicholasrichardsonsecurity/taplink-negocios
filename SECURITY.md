@@ -30,6 +30,9 @@
 - minimização financeira: CPF/CNPJ, e-mail e telefone seguem ao Asaas e não são persistidos no TapLink nesta versão;
 - faturas: somente URLs HTTPS do domínio Asaas são armazenadas e exibidas;
 - inadimplência: altera estado administrativo, mas não apaga automaticamente páginas ou dados;
+- operação interna: ações financeiras exigem administrador da plataforma, motivo e confirmação pelo slug da empresa;
+- consistência externa: mudança, suspensão, reativação ou cancelamento atualiza primeiro o Asaas sandbox e só então o banco local;
+- direitos de plano: histórico de analytics, CSV e IA são verificados no backend, não apenas ocultados na interface;
 - auditoria de dependências: deve ser repetida no CI e antes de cada implantação.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
@@ -99,6 +102,7 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 - política de retenção e avaliação periódica dos relatórios generativos;
 - proteção CSRF dedicada na contratação antes da ativação comercial;
 - fila de reprocessamento, alertas de webhook interrompido e conciliação financeira;
+- confirmação em duas etapas ou step-up authentication para cancelamento antes da produção;
 - fluxo de cartão por tokenização ou checkout hospedado, sem captura de cartão pelo TapLink;
 - agendamento e monitoramento operacional do expurgo de analytics;
 - headers CSP definitivos;

@@ -80,11 +80,22 @@ Inteligência opcional concluída na Missão 1.6: resumo semanal determinístico
 
 Planos e billing concluídos na Missão 1.7: Essencial R$ 39,90, Negócios R$ 69,90 e Premium R$ 99,90; trial de 14 dias; Asaas sandbox; Pix e boleto; webhook idempotente; histórico financeiro; inadimplência sem apagar conteúdo.
 
+Operação administrativa concluída na Missão 1.8: indicadores internos, carteira de empresas, acompanhamento de webhooks, alteração de plano, suspensão, reativação e cancelamento com confirmação, atualização prévia do Asaas sandbox e auditoria. Os direitos de analytics, CSV e IA são verificados no backend.
+
+### Modelo comercial físico + software
+
+- placas 10 × 15 cm, tags NFC, impressão UV, embalagem, frete e instalação são cobrados como hardware ou serviço de implantação;
+- a mensalidade não cresce automaticamente pela quantidade de placas;
+- Essencial: R$ 39,90, 1 unidade, 2 usuários e analytics de 30 dias;
+- Negócios: R$ 69,90, 3 unidades, 5 usuários, analytics de 90 dias e CSV;
+- Premium: R$ 99,90, 10 unidades, 10 usuários, CSV, IA opcional e suporte prioritário;
+- preços permanecem hipótese de piloto até validação dos custos, taxas, suporte e aquisição.
+
 ### Próximos marcos
 
 1. Missões 1.1 a 1.4: concluídas;
 2. Missão 1.5: concluída;
 3. Missão 1.6: concluída;
 4. Missão 1.7: concluída;
-5. Missão 1.8: painel interno e operação financeira;
-6. segurança, homologação e piloto físico.
+5. Missão 1.8: concluída;
+6. Missão 1.9: segurança, homologação e piloto físico.

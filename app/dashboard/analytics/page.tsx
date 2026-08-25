@@ -1,5 +1,7 @@
 import { requireSession } from "@/lib/auth/session";
 import { analyticsDays, getAnalyticsReport } from "@/lib/analytics-report";
+import { getOrganizationEntitlements } from "@/lib/entitlements";
+import { allowedAnalyticsDays } from "@/lib/billing";
 
 const sourceNames: Record<string, string> = {
   nfc: "NFC",
@@ -13,7 +15,8 @@ export default async function AnalyticsPage({
   searchParams: Promise<{ days?: string }>;
 }) {
   const session = await requireSession();
-  const days = analyticsDays((await searchParams).days);
+  const entitlements = await getOrganizationEntitlements(session.organizationId);
+  const days = allowedAnalyticsDays(analyticsDays((await searchParams).days), entitlements.limits.analyticsDays);
   const report = await getAnalyticsReport(session.organizationId, days);
   const max = Math.max(1, ...report.daily.map((item) => item.views));
   return (
@@ -26,7 +29,7 @@ export default async function AnalyticsPage({
           <p>Eventos anônimos, deduplicados e sem armazenamento de IP.</p>
         </div>
         <nav>
-          {[7, 30, 90].map((value) => (
+          {[7, 30, 90].filter(value => value <= entitlements.limits.analyticsDays).map((value) => (
             <a
               key={value}
               className={days === value ? "active" : ""}
@@ -35,7 +38,7 @@ export default async function AnalyticsPage({
               {value} dias
             </a>
           ))}
-          <a href={`/api/analytics/export?days=${days}`}>Exportar CSV</a>
+          {entitlements.limits.csv && <a href={`/api/analytics/export?days=${days}`}>Exportar CSV</a>}
         </nav>
       </header>
       <section className="analytics-metrics">
