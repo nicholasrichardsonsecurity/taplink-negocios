@@ -8,7 +8,9 @@
 - PostgreSQL testado: instância descartável do GitHub Actions;
 - autenticação: senha com `scrypt`, sessão opaca e cookie `HttpOnly`;
 - isolamento: associação obrigatória entre usuário e empresa, coberta por teste automatizado;
-- auditoria de dependências: zero vulnerabilidades conhecidas na Missão 1.2.
+- Wi-Fi: senha cifrada com AES-256-GCM e nonce único antes da persistência;
+- publicação: rascunho e versão pública armazenados separadamente;
+- auditoria de dependências: zero vulnerabilidades conhecidas na validação local da Missão 1.3.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
 
@@ -27,6 +29,7 @@ O resultado de uma auditoria representa apenas o instante em que foi executada e
 - sessões são armazenadas no banco somente pelo hash do token;
 - cookies devem usar `HttpOnly`, `SameSite=Lax` e `Secure` em produção;
 - toda rota administrativa deve validar sessão, empresa ativa e função;
+- perfil `analyst` possui somente leitura e não pode salvar ou publicar;
 - um identificador recebido do navegador nunca é prova de acesso ao tenant;
 - o bootstrap do primeiro proprietário deve permanecer protegido contra repetição e concorrência.
 
@@ -58,6 +61,7 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 - proteção CSRF adicional para operações críticas;
 - expiração e revogação administrativa de sessões;
 - sanitização e validação de uploads;
+- limitação de requisições no endpoint público de Wi-Fi;
 - headers CSP definitivos;
 - logs estruturados e alertas;
 - pentest interno;

@@ -12,6 +12,8 @@ Componentes de terceiros serão relacionados em `THIRD_PARTY_NOTICES.md` antes d
 
 A Missão 1.2 estabeleceu o núcleo autenticado e multiempresa. O código foi validado por integração automatizada com PostgreSQL real, mas ainda não constitui lançamento comercial nem autorização para tratamento de dados reais.
 
+A Missão 1.3 incorporou o editor white-label e a página pública dinâmica. Este marco continua sendo pré-produção: URLs, imagens, avaliações, contatos e Wi-Fi demonstrativos não representam autorização para publicação comercial em nome da Lisarojo.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

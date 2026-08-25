@@ -28,4 +28,14 @@ assert.match(html,/Owner CI/);
 const anonymous=await fetch(`${url}/dashboard`,{redirect:"manual"});
 assert.equal(anonymous.status,307,"Acesso anônimo deveria redirecionar");
 assert.equal(anonymous.headers.get("location"),"/login");
-console.log("Bootstrap, login, cookie, dashboard e bloqueio anônimo validados.");
+
+const settings={businessName:"Pizzaria Lisarojo CI",category:"Restaurante e pizzaria",tagline:"Sabor publicado pelo CI.",description:"Experiência white-label validada automaticamente.",logoUrl:"",primaryColor:"#a9362d",secondaryColor:"#d56b35",whatsapp:"81986708073",instagram:"pizzarialisarojo",googleReviewUrl:"https://example.com/google-review",menuUrl:"https://example.com/cardapio",locationUrl:"https://example.com/local",wifiSsid:"LISAROJO_CI",wifiPassword:"senha-wifi-ci",shortcuts:["Cardápio","Avaliar","Wi-Fi"],showPromo:true,showAbout:true,showLocation:true};
+const publish=await fetch(`${url}/api/page-settings`,{method:"PUT",headers:{"content-type":"application/json",cookie},body:JSON.stringify({settings,publish:true})});
+assert.equal(publish.status,200,`Publicação falhou: ${await publish.text()}`);
+const publicPage=await fetch(`${url}/p/empresa-ci`);assert.equal(publicPage.status,200);const publishedHtml=await publicPage.text();assert.match(publishedHtml,/Sabor publicado pelo CI/);assert.doesNotMatch(publishedHtml,/senha-wifi-ci/);
+const wifi=await fetch(`${url}/api/public/empresa-ci/wifi`);assert.equal(wifi.status,200);assert.equal((await wifi.json()).password,"senha-wifi-ci");
+const draftSettings={...settings,tagline:"Alteração ainda em rascunho."};
+const draft=await fetch(`${url}/api/page-settings`,{method:"PUT",headers:{"content-type":"application/json",cookie},body:JSON.stringify({settings:draftSettings,publish:false})});assert.equal(draft.status,200);
+const editorState=await fetch(`${url}/api/page-settings`,{headers:{cookie}});assert.equal((await editorState.json()).settings.tagline,"Alteração ainda em rascunho.");
+const stillPublished=await fetch(`${url}/p/empresa-ci`);const stillPublishedHtml=await stillPublished.text();assert.match(stillPublishedHtml,/Sabor publicado pelo CI/);assert.doesNotMatch(stillPublishedHtml,/Alteração ainda em rascunho/);
+console.log("Bootstrap, login, editor, publicação, Wi-Fi protegido, rascunho e isolamento validados.");
