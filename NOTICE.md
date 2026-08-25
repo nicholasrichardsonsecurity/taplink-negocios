@@ -7,3 +7,21 @@ Todos os direitos são reservados. Este repositório não é open source. Acesso
 Antes da contratação de funcionários, freelancers, sócios técnicos ou fornecedores, deve existir instrumento escrito de confidencialidade e cessão ou licenciamento de direitos patrimoniais compatível com a relação jurídica.
 
 Componentes de terceiros serão relacionados em `THIRD_PARTY_NOTICES.md` antes de cada lançamento comercial.
+
+## Estado da implementação
+
+A Missão 1.2 estabeleceu o núcleo autenticado e multiempresa. O código foi validado por integração automatizada com PostgreSQL real, mas ainda não constitui lançamento comercial nem autorização para tratamento de dados reais.
+
+O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
+
+## Controle de contribuições
+
+- colaboradores recebem apenas o acesso mínimo necessário;
+- cópias locais continuam submetidas à licença proprietária;
+- contribuições não autorizam reutilização fora do projeto;
+- nenhuma dependência pode ser adicionada sem análise da licença e da necessidade;
+- nenhum terceiro poderá receber código ou acesso sem autorização de Nicholas Richardson.
+
+## Documentação vinculante do projeto
+
+As decisões técnicas e operacionais vigentes devem estar registradas no `README.md`, `SECURITY.md`, `LICENSE.md`, `AGENTS.md`, `CHANGELOG.md` e na pasta `docs`.
