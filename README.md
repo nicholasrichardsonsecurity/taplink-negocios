@@ -1,111 +1,246 @@
-# TapLink Negócios
+<div align="center">
+  <img src="./public/brand/taplink-negocios-readme-banner.png" alt="TapLink Negócios" width="100%" />
 
-Plataforma SaaS multiempresa e white-label integrada a placas NFC e QR Code para restaurantes, provedores, barbearias e outros negócios.
+  <br />
+
+  **Tudo do seu negócio em um toque.**
+
+  SaaS multiempresa e white-label integrado a placas NFC e QR Code.
+
+  <br />
+
+  ![Next.js](https://img.shields.io/badge/Next.js-16.3-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+  ![React](https://img.shields.io/badge/React-19.2-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+  ![Drizzle](https://img.shields.io/badge/Drizzle-ORM-C5F74F?style=for-the-badge&logo=drizzle&logoColor=111111)
+  ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+  ![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)
+  ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+
+  <br />
+
+  ![License](https://img.shields.io/badge/licen%C3%A7a-propriet%C3%A1ria-E43B90?style=flat-square)
+  ![Repository](https://img.shields.io/badge/reposit%C3%B3rio-privado-6D42E8?style=flat-square)
+  ![CI](https://img.shields.io/badge/CI-aprovado-2AB27B?style=flat-square)
+  ![Security](https://img.shields.io/badge/vulnerabilidades_conhecidas-0-2AB27B?style=flat-square)
+</div>
+
+---
+
+## Visão do produto
+
+O TapLink Negócios transforma uma placa física com NFC e QR Code em uma página dinâmica do estabelecimento. O cliente aproxima o celular e encontra cardápio, Wi-Fi, WhatsApp, redes sociais, localização, promoções e avaliação no Google.
+
+O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a tag NFC.
+
+### Público inicial
+
+- restaurantes, bares e cafeterias;
+- provedores de internet;
+- barbearias e salões;
+- hotéis e pousadas;
+- clínicas, lojas e espaços de atendimento.
 
 ## Estado atual
 
-**Missão 1.3 implementada e em validação no CI em 25/08/2026.**
+| Marco | Estado | Evidência |
+|---|---|---|
+| Missão 0 — conceito e protótipo | Concluída | Modelos Lisarojo, GigaNetPe e barbearia |
+| Missão 1.1 — fundação | Concluída | Build, PostgreSQL, autenticação e Docker |
+| Missão 1.2 — integração real | Concluída | CI com banco real, login e isolamento de tenants |
+| Missão 1.3 — editor white-label | Concluída | Rascunho, publicação, Wi-Fi cifrado e página por slug |
+| Missão 1.4 — arquivos e gestão | Concluída | Upload, QR Code e painel multiempresa |
+| Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
-O núcleo comercial já possui aplicação Next.js, PostgreSQL, migrations, autenticação, sessões persistentes, dashboard protegido e autorização multiempresa. O protótipo visual da Pizzaria Lisarojo será incorporado nos próximos marcos como editor e página pública dinâmica.
+## Funcionalidades implementadas
 
-O editor white-label agora configura identidade, cores, links, Google Avaliações, cardápio, localização, Wi-Fi, atalhos e seções. Rascunho e versão publicada são armazenados separadamente; salvar não altera a página que já está pública.
-
-Validação automatizada aprovada no GitHub Actions com PostgreSQL real:
-
-- migration aplicada;
-- bootstrap único do primeiro proprietário;
-- hash e verificação de senha com `scrypt`;
-- login e cookie de sessão;
+- autenticação com senha protegida por `scrypt`;
+- sessões opacas persistidas pelo hash do token;
+- cookie `HttpOnly`, `SameSite=Lax` e `Secure` em produção;
+- isolamento entre empresas e funções;
 - dashboard autenticado;
-- redirecionamento de visitante anônimo;
-- isolamento entre duas empresas;
-- build de produção;
-- auditoria com zero vulnerabilidades conhecidas no momento da execução.
+- editor white-label responsivo;
+- identidade, cores, textos, links e seções;
+- atalhos inferiores configuráveis;
+- rascunho separado da versão publicada;
+- página pública dinâmica `/p/[slug]`;
+- Wi-Fi cifrado com AES-256-GCM;
+- senha do Wi-Fi ausente do HTML inicial;
+- auditoria de salvamento e publicação;
+- upload de logo com otimização e remoção de metadados;
+- arquivos privados em S3/MinIO e entrega pública por ativo autorizado;
+- QR Code Wi-Fi gerado localmente, sem API de terceiros;
+- cadastro interno e troca segura de empresa ativa;
+- migrations PostgreSQL versionadas;
+- CI com banco real e testes ponta a ponta.
 
-## Titularidade
+## Arquitetura atual
 
-- Criador e titular: Nicholas Richardson;
-- empresa vinculada: GigaNetPe Telecom;
-- licença: proprietária e restritiva;
-- distribuição pública: proibida.
+```mermaid
+flowchart TD
+    V[Visitante NFC ou QR] --> P[Página pública]
+    E[Estabelecimento] --> A[Painel autenticado]
+    A --> T[Autorização multiempresa]
+    P --> API[Aplicação Next.js]
+    T --> API
+    API --> DB[(PostgreSQL)]
+    API --> AUD[Auditoria]
+    API --> EXT[Asaas e APIs auxiliares]
+```
 
-Consulte [LICENSE.md](LICENSE.md) e [NOTICE.md](NOTICE.md).
+O MVP permanece um monólito modular. Workers, filas e serviços independentes serão extraídos somente quando houver necessidade operacional real. Microsserviço prematuro é só boleto distribuído.
 
-## Estrutura atual
+## Estrutura do repositório
 
-- `app`: interface, rotas públicas, dashboard e endpoints;
-- `lib/auth`: senhas e sessões;
-- `packages/database`: schema e migrations PostgreSQL;
-- `tests`: testes unitários e de integração;
-- `.github/workflows`: validação automatizada com PostgreSQL;
-- `docs`: produto, propriedade, segurança operacional e servidor.
+```text
+taplink-negocios/
+├── app/                         # interface e rotas HTTP
+│   ├── api/                     # autenticação, editor, saúde e Wi-Fi
+│   ├── dashboard/               # painel e editor white-label
+│   └── p/[slug]/                # página pública
+├── lib/                         # autenticação, criptografia e validações
+├── packages/database/           # schema, tenant e migrations
+├── tests/                       # testes unitários e de integração
+├── public/brand/                # identidade visual oficial
+├── docs/                        # produto, servidor e titularidade
+├── .github/workflows/           # CI com PostgreSQL
+├── Dockerfile
+└── docker-compose.homolog.yml
+```
 
-Workers, componentes compartilhados e analytics serão separados quando o volume justificar. O MVP permanece um monólito modular para reduzir custo e complexidade operacional.
+## Rotas principais
 
-## Infraestrutura de homologação
-
-- servidor: Debian em infraestrutura própria;
-- publicação inicial: IP, sem domínio definitivo;
-- Docker Compose separado do LoopClub;
-- PostgreSQL, redes, volumes e credenciais exclusivos;
-- serviços internos não expostos diretamente à internet.
-- aplicação ligada inicialmente apenas a `127.0.0.1` no host;
-- nenhuma implantação realizada no Debian até a auditoria somente leitura.
-
-Leia [docs/SERVER_ISOLATION.md](docs/SERVER_ISOLATION.md) antes de qualquer ação no servidor.
-
-## Segurança
-
-- nunca versionar `.env`, credenciais, backups ou dados reais;
-- não reutilizar senhas, volumes ou redes do LoopClub;
-- banco e Redis não podem publicar portas no host;
-- primeiro acesso ao servidor deve ser somente leitura;
-- deploy exige backup e plano de reversão.
-- bootstrap exige token forte e funciona apenas antes da criação do primeiro usuário;
-- toda autorização deve validar usuário, empresa e função.
+| Rota | Acesso | Função |
+|---|---|---|
+| `/` | Público | Apresentação do produto |
+| `/login` | Público | Autenticação |
+| `/dashboard` | Autenticado | Visão geral da empresa |
+| `/dashboard/page-editor` | Autenticado | Editor white-label |
+| `/dashboard/organizations` | Autenticado | Seleção da empresa ativa |
+| `/admin/companies` | Administrador da plataforma | Cadastro de empresas |
+| `/p/[slug]` | Público | Página publicada |
+| `/api/health` | Técnico | Saúde da aplicação e banco |
+| `/api/page-settings` | Autenticado | Rascunho e publicação |
+| `/api/public/[slug]/wifi` | Público | Wi-Fi publicado sob demanda |
+| `/api/public/[slug]/wifi-qr` | Público | QR Wi-Fi gerado localmente |
+| `/api/uploads/logo` | Editor autorizado | Upload seguro da logo |
 
 ## Desenvolvimento local
 
+### Pré-requisitos
+
+- Node.js 24 ou superior;
+- Docker e Docker Compose;
+- Git.
+
+### Instalação
+
 ```bash
+git clone https://github.com/nicholasrichardsonsecurity/taplink-negocios.git
+cd taplink-negocios
 cp .env.example .env
-npm install
-npm run db:generate
+npm ci
 docker compose -f docker-compose.homolog.yml up -d postgres
 npm run db:migrate
 npm run dev
 ```
 
-Validação completa:
+Acesse `http://localhost:3000`.
+
+O primeiro proprietário é criado uma única vez por `POST /api/auth/bootstrap`, utilizando `BOOTSTRAP_TOKEN`. Depois da primeira criação, o endpoint recusa novas inicializações.
+
+## Qualidade
 
 ```bash
-npm run check
+npm run check:ownership
+npm run typecheck
+npm run test:unit
+npm run build
+npm audit --omit=dev
 ```
 
-O primeiro proprietário é criado uma única vez por `POST /api/auth/bootstrap`, usando `BOOTSTRAP_TOKEN`. Depois que existir um usuário, o endpoint recusa novas inicializações.
+O GitHub Actions também executa:
 
-## Rotas iniciais
+- PostgreSQL 17 descartável;
+- migrations desde banco vazio;
+- bootstrap único;
+- login, cookie e dashboard;
+- isolamento entre duas empresas;
+- editor, publicação e rascunho;
+- verificação de que o Wi-Fi não está em texto puro;
+- build de produção.
 
-- `/`: apresentação;
-- `/login`: autenticação;
-- `/dashboard`: área protegida;
-- `/dashboard/page-editor`: editor white-label autenticado;
-- `/p/[slug]`: página pública publicada;
-- `/api/health`: saúde da aplicação e banco;
-- `/api/page-settings`: leitura, rascunho e publicação;
-- `/api/public/[slug]/wifi`: entrega sob demanda da senha publicada;
-- `/api/auth/bootstrap`: inicialização controlada;
-- `/api/auth/login` e `/api/auth/logout`: sessão.
+## Infraestrutura de homologação
 
-## Próximo marco
+- servidor Debian próprio;
+- IP inicial: `190.89.151.9`;
+- diretório previsto: `/opt/taplink/taplink-negocios`;
+- Compose: `taplink-homolog`;
+- rede, volumes, banco e credenciais exclusivos;
+- aplicação ligada inicialmente apenas a `127.0.0.1`;
+- PostgreSQL e armazenamento sem portas públicas;
+- LoopClub completamente separado.
 
-Missão 1.4: upload real de logo e imagens, QR Code de Wi-Fi, cadastro administrativo de empresas e seleção explícita de tenant para usuários com múltiplos negócios.
+Nenhum deploy será realizado antes da auditoria definida em [`docs/SERVER_ISOLATION.md`](docs/SERVER_ISOLATION.md).
 
-## Documentação obrigatória
+## APIs e integrações
 
-Cada missão deve revisar e atualizar, quando aplicável:
+### MVP
 
-- `README.md`;
-- `SECURITY.md`;
-- `NOTICE.md`;
-- `docs/SERVER_ISOLATION.md`;
-- `CHANGELOG.md`.
+- Asaas — assinatura e cobrança;
+- ViaCEP ou BrasilAPI — preenchimento de endereço;
+- IBGE Localidades — estados e municípios;
+- Google Avaliações — link direto configurado;
+- WhatsApp `wa.me` — atendimento e pedidos.
+
+### Futuras
+
+- Google Business Profile;
+- WhatsApp Cloud API;
+- Instagram Graph API;
+- OpenStreetMap;
+- Open-Meteo para campanhas contextuais.
+
+NFC, QR Code, Wi-Fi, editor, analytics e páginas não dependerão de API externa para funcionar.
+
+## Segurança
+
+- dados reais ainda são proibidos;
+- `.env`, credenciais e backups nunca são versionados;
+- Wi-Fi é cifrado antes da persistência;
+- perfil analista não pode publicar;
+- banco e armazenamento permanecem internos;
+- deploy exige CI, backup, healthcheck e rollback;
+- pentest e revisão LGPD são obrigatórios antes de clientes reais.
+
+Consulte [`SECURITY.md`](SECURITY.md).
+
+## Próxima missão
+
+### Missão 1.5 — analytics e eventos
+
+- registro de toque NFC, leitura de QR e ações por botão;
+- dashboard com gráficos por período, empresa e origem;
+- proteção contra tráfego automatizado e duplicidades;
+- exportação de relatórios;
+- consentimento, retenção e privacidade preparados para LGPD.
+
+## Titularidade
+
+**Criador e titular:** Nicholas Richardson
+
+**Empresa vinculada:** GigaNetPe Telecom
+
+**Licença:** proprietária e restritiva
+**Distribuição:** proibida sem autorização escrita
+
+Este projeto não é open source. O acesso ao repositório não concede autorização de uso, cópia, modificação, hospedagem ou distribuição. Consulte [`LICENSE.md`](LICENSE.md) e [`NOTICE.md`](NOTICE.md).
+
+---
+
+<div align="center">
+  <img src="./public/brand/taplink-negocios-logo-white-readme.png" alt="Símbolo TapLink Negócios" width="180" />
+
+  **Copyright © 2026 Nicholas Richardson · GigaNetPe Telecom**
+</div>

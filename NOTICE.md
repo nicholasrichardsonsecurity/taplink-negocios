@@ -14,6 +14,8 @@ A Missão 1.2 estabeleceu o núcleo autenticado e multiempresa. O código foi va
 
 A Missão 1.3 incorporou o editor white-label e a página pública dinâmica. Este marco continua sendo pré-produção: URLs, imagens, avaliações, contatos e Wi-Fi demonstrativos não representam autorização para publicação comercial em nome da Lisarojo.
 
+A Missão 1.4 adicionou upload de identidade visual, QR Wi-Fi, seleção multiempresa e administração interna. Os recursos continuam em pré-produção e não autorizam uso de dados ou credenciais reais antes dos controles de implantação, LGPD e segurança previstos.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

@@ -13,7 +13,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/**/*.test.ts",
-    "test:unit": "node --import tsx --test tests/password.test.ts tests/page-settings.test.ts tests/secrets.test.ts",
+    "test:unit": "node --import tsx --test tests/password.test.ts tests/page-settings.test.ts tests/secrets.test.ts tests/wifi.test.ts",
     "test:integration": "node --import tsx --test tests/database.integration.test.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -21,15 +21,19 @@
     "check": "npm run check:ownership && npm run typecheck && npm run build"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1117.0",
     "drizzle-orm": "0.45.2",
     "next": "16.3.2",
     "postgres": "3.4.9",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "qrcode": "1.5.4",
+    "sharp": "0.35.3",
     "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "24.10.1",
+    "@types/qrcode": "1.5.6",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "drizzle-kit": "0.31.10",

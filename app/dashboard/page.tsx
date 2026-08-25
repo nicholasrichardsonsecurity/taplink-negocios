@@ -1,3 +1,80 @@
-import {requireSession} from "@/lib/auth/session";
+import { requireSession } from "@/lib/auth/session";
 
-export default async function Dashboard(){const s=await requireSession();return <main className="dashboard"><aside><div className="brand"><span>T</span><b>TapLink</b></div><nav><a className="active">Visão geral</a><a href="/dashboard/page-editor">Página pública</a><a>Placas e NFC</a><a>Analytics</a><a>Equipe</a><a>Plano e cobrança</a></nav><form action="/api/auth/logout" method="post"><button>Sair</button></form></aside><section><header><div><small>EMPRESA ATIVA</small><h1>{s.organizationName}</h1></div><div className="profile"><span>{s.userName.charAt(0)}</span><div><b>{s.userName}</b><small>{s.role}</small></div></div></header><div className="welcome"><small>MISSÃO 1.3</small><h2>Seu negócio, sua identidade.</h2><p>Edite a página white-label e publique as alterações sem tocar no código ou regravar a placa NFC.</p></div><div className="metrics"><article><small>PÁGINA PÚBLICA</small><b>Editor ativo</b><span>Rascunho e publicação</span></article><article><small>EMPRESA</small><b>{s.organizationSlug}</b><span>Tenant ativo na sessão</span></article><article><small>PERFIL</small><b>{s.role}</b><span>Permissão carregada do banco</span></article></div><div className="next-card"><div><small>EDITOR WHITE-LABEL</small><h3>Personalize a página pública</h3><p>Identidade visual, links, Wi-Fi e atalhos configuráveis.</p></div><a className="dashboard-cta" href="/dashboard/page-editor">Abrir editor</a></div></section></main>}
+export default async function Dashboard() {
+  const s = await requireSession();
+  return (
+    <main className="dashboard">
+      <aside>
+        <div className="brand">
+          <span>T</span>
+          <b>TapLink</b>
+        </div>
+        <nav>
+          <a className="active">Visão geral</a>
+          <a href="/dashboard/page-editor">Página pública</a>
+          <a href="/dashboard/organizations">Trocar empresa</a>
+          {s.platformRole === "platform_admin" && (
+            <a href="/admin/companies">Administrar empresas</a>
+          )}
+          <a>Placas e NFC</a>
+          <a>Analytics</a>
+          <a>Equipe</a>
+          <a>Plano e cobrança</a>
+        </nav>
+        <form action="/api/auth/logout" method="post">
+          <button>Sair</button>
+        </form>
+      </aside>
+      <section>
+        <header>
+          <div>
+            <small>EMPRESA ATIVA</small>
+            <h1>{s.organizationName}</h1>
+          </div>
+          <div className="profile">
+            <span>{s.userName.charAt(0)}</span>
+            <div>
+              <b>{s.userName}</b>
+              <small>{s.role}</small>
+            </div>
+          </div>
+        </header>
+        <div className="welcome">
+          <small>MISSÃO 1.4</small>
+          <h2>Seu negócio, sua identidade.</h2>
+          <p>
+            Edite a página white-label e publique as alterações sem tocar no
+            código ou regravar a placa NFC.
+          </p>
+        </div>
+        <div className="metrics">
+          <article>
+            <small>PÁGINA PÚBLICA</small>
+            <b>Editor ativo</b>
+            <span>Rascunho e publicação</span>
+          </article>
+          <article>
+            <small>EMPRESA</small>
+            <b>{s.organizationSlug}</b>
+            <span>Tenant ativo na sessão</span>
+          </article>
+          <article>
+            <small>PERFIL</small>
+            <b>{s.role}</b>
+            <span>Permissão carregada do banco</span>
+          </article>
+        </div>
+        <div className="next-card">
+          <div>
+            <small>EDITOR WHITE-LABEL</small>
+            <h3>Personalize a página pública</h3>
+            <p>Identidade visual, links, Wi-Fi e atalhos configuráveis.</p>
+          </div>
+          <a className="dashboard-cta" href="/dashboard/page-editor">
+            Abrir editor
+          </a>
+        </div>
+      </section>
+    </main>
+  );
+}
