@@ -56,6 +56,14 @@ Padrão inicial Lisarojo: `Início`, `Cardápio`, `Avaliar`, `Wi-Fi`.
 - cobrança recorrente via Asaas;
 - bloqueio administrativo proporcional, sem apagar a página ou os dados do cliente.
 
+## Estratégia de IA e agentes
+
+- agentes locais poderão acelerar revisão de escopo, dependências e histórico do código;
+- analytics da Missão 1.5 será determinístico e independente de IA;
+- assistente de conteúdo, relatórios interpretados e recomendações entram somente após o núcleo de analytics;
+- toda IA comercial deverá possuir fallback, limites de custo, auditoria, consentimento e isolamento por empresa;
+- a estratégia completa e o guia de instalação estão em `docs/AI_ACCELERATION_AND_AGENTS.md`.
+
 ## Marcos
 
 ### Missão 0 — concluída
@@ -68,10 +76,9 @@ Repositório, propriedade intelectual, arquitetura, Docker, banco, autenticaçã
 
 ### Próximos marcos
 
-1. editor e publicação real;
-2. arquivos e identidade visual;
-3. links, Wi-Fi, QR e NFC;
-4. analytics e relatórios;
-5. Asaas e planos;
-6. painel interno;
-7. segurança, homologação e piloto físico.
+1. Missões 1.1 a 1.4: concluídas;
+2. Missão 1.5: analytics e relatórios determinísticos;
+3. Missão 1.6: assistente e relatórios inteligentes opcionais;
+4. Asaas e planos;
+5. painel interno completo;
+6. segurança, homologação e piloto físico.
