@@ -1,17 +1,403 @@
 "use client";
-import {useEffect,useState} from "react";
-import type {PageSettings} from "@/lib/page-settings";
-import {lisarojoDefaults,shortcutOptions} from "@/lib/page-settings";
+import { useEffect, useState } from "react";
+import type { PageSettings } from "@/lib/page-settings";
+import { lisarojoDefaults, shortcutOptions } from "@/lib/page-settings";
 
-const tabs=["Identidade","Links","Wi-Fi","Atalhos","Seções"] as const;type Tab=typeof tabs[number];
-export default function Editor({companyName,slug}:{companyName:string;slug:string}){
- const[s,setS]=useState<PageSettings>(lisarojoDefaults);const[tab,setTab]=useState<Tab>("Identidade");const[status,setStatus]=useState("Carregando…");const[published,setPublished]=useState(false);
- useEffect(()=>{fetch("/api/page-settings").then(async r=>{if(!r.ok)throw new Error();const data=await r.json();setS(data.settings);setPublished(data.published);setStatus(data.published?"Publicado":"Rascunho")}).catch(()=>setStatus("Erro ao carregar"))},[]);
- const set=<K extends keyof PageSettings>(key:K,value:PageSettings[K])=>{setS(v=>({...v,[key]:value}));setStatus("Alterações não salvas")};
- async function save(publish:boolean){setStatus(publish?"Publicando…":"Salvando…");const r=await fetch("/api/page-settings",{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify({settings:s,publish})});if(!r.ok){setStatus("Erro ao salvar");return}setPublished(publish);setStatus(publish?"Publicado":"Rascunho salvo")}
- return <main className="editor-shell"><header><a href="/dashboard" className="brand"><span>T</span><b>TapLink</b></a><div><small>EMPRESA</small><b>{companyName}</b></div><nav><a href={`/p/${slug}`} target="_blank">Abrir página</a><span>{status}</span><button onClick={()=>save(false)}>Salvar rascunho</button><button className="publish-button" onClick={()=>save(true)}>Publicar</button></nav></header><section><aside><a href="/dashboard">← Visão geral</a><h1>Editor da página</h1><p>Personalize sem tocar no código.</p>{tabs.map(item=><button key={item} className={tab===item?"active":""} onClick={()=>setTab(item)}>{item}</button>)}<footer>{published?"● Página publicada":"○ Ainda não publicada"}</footer></aside><div className="editor-form"><div className="form-heading"><small>{tab.toUpperCase()}</small><h2>{title(tab)}</h2><p>As alterações aparecem imediatamente na prévia.</p></div>{tab==="Identidade"&&<><Field label="Nome comercial"><input value={s.businessName} onChange={e=>set("businessName",e.target.value)}/></Field><Field label="Categoria"><input value={s.category} onChange={e=>set("category",e.target.value)}/></Field><Field label="Frase principal"><input value={s.tagline} onChange={e=>set("tagline",e.target.value)}/></Field><Field label="Descrição"><textarea value={s.description} onChange={e=>set("description",e.target.value)}/></Field><Field label="URL da logomarca"><input placeholder="https://..." value={s.logoUrl} onChange={e=>set("logoUrl",e.target.value)}/></Field><div className="form-split"><Field label="Cor principal"><input type="color" value={s.primaryColor} onChange={e=>set("primaryColor",e.target.value)}/></Field><Field label="Cor secundária"><input type="color" value={s.secondaryColor} onChange={e=>set("secondaryColor",e.target.value)}/></Field></div></>}{tab==="Links"&&<><Field label="WhatsApp"><input value={s.whatsapp} onChange={e=>set("whatsapp",e.target.value.replace(/\D/g,""))}/></Field><Field label="Instagram"><input value={s.instagram} onChange={e=>set("instagram",e.target.value.replace("@",""))}/></Field><Field label="Avaliação no Google"><input placeholder="https://g.page/.../review" value={s.googleReviewUrl} onChange={e=>set("googleReviewUrl",e.target.value)}/></Field><Field label="Cardápio online"><input placeholder="https://..." value={s.menuUrl} onChange={e=>set("menuUrl",e.target.value)}/></Field><Field label="Localização"><input placeholder="https://maps.google.com/..." value={s.locationUrl} onChange={e=>set("locationUrl",e.target.value)}/></Field></>}{tab==="Wi-Fi"&&<><div className="editor-notice">A senha é criptografada antes de ser armazenada. A página pública só a apresenta após o visitante abrir o botão Wi-Fi.</div><Field label="Nome da rede"><input value={s.wifiSsid} onChange={e=>set("wifiSsid",e.target.value)}/></Field><Field label="Senha"><input type="password" value={s.wifiPassword} onChange={e=>set("wifiPassword",e.target.value)}/></Field></>}{tab==="Atalhos"&&<><p className="helper">Início é fixo. Escolha três ações sem repetir.</p>{s.shortcuts.map((shortcut,index)=><Field key={index} label={`Atalho ${index+2}`}><select value={shortcut} onChange={e=>{const next=[...s.shortcuts] as PageSettings["shortcuts"];next[index]=e.target.value as PageSettings["shortcuts"][number];set("shortcuts",next)}}>{shortcutOptions.map(option=><option key={option}>{option}</option>)}</select></Field>)}</>}{tab==="Seções"&&<><Toggle label="Promoção ou destaque" checked={s.showPromo} onChange={v=>set("showPromo",v)}/><Toggle label="Sobre o estabelecimento" checked={s.showAbout} onChange={v=>set("showAbout",v)}/><Toggle label="Localização" checked={s.showLocation} onChange={v=>set("showLocation",v)}/><Toggle label="Avaliações do Google" checked={true} locked onChange={()=>{}}/></>}</div><Preview s={s}/></section></main>
+const tabs = ["Identidade", "Links", "Wi-Fi", "Atalhos", "Seções"] as const;
+type Tab = (typeof tabs)[number];
+export default function Editor({
+  companyName,
+  slug,
+}: {
+  companyName: string;
+  slug: string;
+}) {
+  const [s, setS] = useState<PageSettings>(lisarojoDefaults);
+  const [tab, setTab] = useState<Tab>("Identidade");
+  const [status, setStatus] = useState("Carregando…");
+  const [published, setPublished] = useState(false);
+  useEffect(() => {
+    fetch("/api/page-settings")
+      .then(async (r) => {
+        if (!r.ok) throw new Error();
+        const data = await r.json();
+        setS(data.settings);
+        setPublished(data.published);
+        setStatus(data.published ? "Publicado" : "Rascunho");
+      })
+      .catch(() => setStatus("Erro ao carregar"));
+  }, []);
+  const set = <K extends keyof PageSettings>(
+    key: K,
+    value: PageSettings[K],
+  ) => {
+    setS((v) => ({ ...v, [key]: value }));
+    setStatus("Alterações não salvas");
+  };
+  async function save(publish: boolean) {
+    setStatus(publish ? "Publicando…" : "Salvando…");
+    const r = await fetch("/api/page-settings", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ settings: s, publish }),
+    });
+    if (!r.ok) {
+      setStatus("Erro ao salvar");
+      return;
+    }
+    setPublished(publish);
+    setStatus(publish ? "Publicado" : "Rascunho salvo");
+  }
+  async function uploadLogo(file: File) {
+    setStatus("Enviando logomarca…");
+    const body = new FormData();
+    body.set("file", file);
+    const r = await fetch("/api/uploads/logo", { method: "POST", body });
+    const data = await r.json();
+    if (!r.ok) {
+      setStatus(data.error ?? "Erro no envio");
+      return;
+    }
+    set("logoUrl", data.url);
+    setStatus("Logo enviada — salve o rascunho");
+  }
+  return (
+    <main className="editor-shell">
+      <header>
+        <a href="/dashboard" className="brand">
+          <span>T</span>
+          <b>TapLink</b>
+        </a>
+        <div>
+          <small>EMPRESA</small>
+          <b>{companyName}</b>
+        </div>
+        <nav>
+          <a href={`/p/${slug}`} target="_blank">
+            Abrir página
+          </a>
+          <span>{status}</span>
+          <button onClick={() => save(false)}>Salvar rascunho</button>
+          <button className="publish-button" onClick={() => save(true)}>
+            Publicar
+          </button>
+        </nav>
+      </header>
+      <section>
+        <aside>
+          <a href="/dashboard">← Visão geral</a>
+          <h1>Editor da página</h1>
+          <p>Personalize sem tocar no código.</p>
+          {tabs.map((item) => (
+            <button
+              key={item}
+              className={tab === item ? "active" : ""}
+              onClick={() => setTab(item)}
+            >
+              {item}
+            </button>
+          ))}
+          <footer>
+            {published ? "● Página publicada" : "○ Ainda não publicada"}
+          </footer>
+        </aside>
+        <div className="editor-form">
+          <div className="form-heading">
+            <small>{tab.toUpperCase()}</small>
+            <h2>{title(tab)}</h2>
+            <p>As alterações aparecem imediatamente na prévia.</p>
+          </div>
+          {tab === "Identidade" && (
+            <>
+              <Field label="Nome comercial">
+                <input
+                  value={s.businessName}
+                  onChange={(e) => set("businessName", e.target.value)}
+                />
+              </Field>
+              <Field label="Categoria">
+                <input
+                  value={s.category}
+                  onChange={(e) => set("category", e.target.value)}
+                />
+              </Field>
+              <Field label="Frase principal">
+                <input
+                  value={s.tagline}
+                  onChange={(e) => set("tagline", e.target.value)}
+                />
+              </Field>
+              <Field label="Descrição">
+                <textarea
+                  value={s.description}
+                  onChange={(e) => set("description", e.target.value)}
+                />
+              </Field>
+              <Field label="Enviar logomarca">
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) uploadLogo(file);
+                  }}
+                />
+                <small>PNG, JPEG ou WebP, até 5 MB. Otimização automática.</small>
+                {s.logoUrl && (
+                  <img
+                    src={s.logoUrl}
+                    alt="Prévia da logomarca"
+                    style={{ maxWidth: 120, maxHeight: 80, objectFit: "contain", marginTop: 8 }}
+                  />
+                )}
+              </Field>
+              <Field label="URL alternativa da logomarca">
+                <input
+                  placeholder="https://..."
+                  value={s.logoUrl}
+                  onChange={(e) => set("logoUrl", e.target.value)}
+                />
+              </Field>
+              <div className="form-split">
+                <Field label="Cor principal">
+                  <input
+                    type="color"
+                    value={s.primaryColor}
+                    onChange={(e) => set("primaryColor", e.target.value)}
+                  />
+                </Field>
+                <Field label="Cor secundária">
+                  <input
+                    type="color"
+                    value={s.secondaryColor}
+                    onChange={(e) => set("secondaryColor", e.target.value)}
+                  />
+                </Field>
+              </div>
+            </>
+          )}
+          {tab === "Links" && (
+            <>
+              <Field label="WhatsApp">
+                <input
+                  value={s.whatsapp}
+                  onChange={(e) =>
+                    set("whatsapp", e.target.value.replace(/\D/g, ""))
+                  }
+                />
+              </Field>
+              <Field label="Instagram">
+                <input
+                  value={s.instagram}
+                  onChange={(e) =>
+                    set("instagram", e.target.value.replace("@", ""))
+                  }
+                />
+              </Field>
+              <Field label="Avaliação no Google">
+                <input
+                  placeholder="https://g.page/.../review"
+                  value={s.googleReviewUrl}
+                  onChange={(e) => set("googleReviewUrl", e.target.value)}
+                />
+              </Field>
+              <Field label="Cardápio online">
+                <input
+                  placeholder="https://..."
+                  value={s.menuUrl}
+                  onChange={(e) => set("menuUrl", e.target.value)}
+                />
+              </Field>
+              <Field label="Localização">
+                <input
+                  placeholder="https://maps.google.com/..."
+                  value={s.locationUrl}
+                  onChange={(e) => set("locationUrl", e.target.value)}
+                />
+              </Field>
+            </>
+          )}
+          {tab === "Wi-Fi" && (
+            <>
+              <div className="editor-notice">
+                A senha é criptografada antes de ser armazenada. A página
+                pública só a apresenta após o visitante abrir o botão Wi-Fi.
+              </div>
+              <Field label="Nome da rede">
+                <input
+                  value={s.wifiSsid}
+                  onChange={(e) => set("wifiSsid", e.target.value)}
+                />
+              </Field>
+              <Field label="Senha">
+                <input
+                  type="password"
+                  value={s.wifiPassword}
+                  onChange={(e) => set("wifiPassword", e.target.value)}
+                />
+              </Field>
+            </>
+          )}
+          {tab === "Atalhos" && (
+            <>
+              <p className="helper">
+                Início é fixo. Escolha três ações sem repetir.
+              </p>
+              {s.shortcuts.map((shortcut, index) => (
+                <Field key={index} label={`Atalho ${index + 2}`}>
+                  <select
+                    value={shortcut}
+                    onChange={(e) => {
+                      const next = [
+                        ...s.shortcuts,
+                      ] as PageSettings["shortcuts"];
+                      next[index] = e.target
+                        .value as PageSettings["shortcuts"][number];
+                      set("shortcuts", next);
+                    }}
+                  >
+                    {shortcutOptions.map((option) => (
+                      <option key={option}>{option}</option>
+                    ))}
+                  </select>
+                </Field>
+              ))}
+            </>
+          )}
+          {tab === "Seções" && (
+            <>
+              <Toggle
+                label="Promoção ou destaque"
+                checked={s.showPromo}
+                onChange={(v) => set("showPromo", v)}
+              />
+              <Toggle
+                label="Sobre o estabelecimento"
+                checked={s.showAbout}
+                onChange={(v) => set("showAbout", v)}
+              />
+              <Toggle
+                label="Localização"
+                checked={s.showLocation}
+                onChange={(v) => set("showLocation", v)}
+              />
+              <Toggle
+                label="Avaliações do Google"
+                checked={true}
+                locked
+                onChange={() => {}}
+              />
+            </>
+          )}
+        </div>
+        <Preview s={s} />
+      </section>
+    </main>
+  );
 }
-function title(tab:Tab){return {Identidade:"Identidade visual",Links:"Links e atendimento","Wi-Fi":"Wi-Fi para clientes",Atalhos:"Barra inferior",Seções:"Seções da página"}[tab]}
-function Field({label,children}:{label:string;children:React.ReactNode}){return <label className="editor-field"><span>{label}</span>{children}</label>}
-function Toggle({label,checked,onChange,locked=false}:{label:string;checked:boolean;onChange:(value:boolean)=>void;locked?:boolean}){return <label className="editor-toggle"><span><b>{label}</b><small>{locked?"Obrigatória":"Configurável"}</small></span><input type="checkbox" checked={checked} disabled={locked} onChange={e=>onChange(e.target.checked)}/></label>}
-function Preview({s}:{s:PageSettings}){return <aside className="live-preview"><small>PRÉVIA AO VIVO</small><div className="preview-phone"><header><b>{s.businessName}</b><i>☰</i></header><section style={{background:`linear-gradient(145deg,${s.primaryColor},${s.secondaryColor})`}}><small>{s.category}</small><h2>{s.tagline}</h2><p>{s.description}</p><button>Ver cardápio →</button></section><div className="preview-actions"><span>⌑<small>Cardápio</small></span><span>⌁<small>Wi-Fi</small></span><span>★<small>Avaliar</small></span><span>↗<small>WhatsApp</small></span></div>{s.showPromo&&<article><small>DESTAQUE DA CASA</small><b>Pizza feita para compartilhar.</b></article>}<div className="preview-review">★★★★★<b>Sua opinião importa.</b></div><nav><span>⌂<small>Início</small></span>{s.shortcuts.map(item=><span key={item}>{item==="Avaliar"?"★":item==="Wi-Fi"?"⌁":"•"}<small>{item}</small></span>)}</nav></div></aside>}
+function title(tab: Tab) {
+  return {
+    Identidade: "Identidade visual",
+    Links: "Links e atendimento",
+    "Wi-Fi": "Wi-Fi para clientes",
+    Atalhos: "Barra inferior",
+    Seções: "Seções da página",
+  }[tab];
+}
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="editor-field">
+      <span>{label}</span>
+      {children}
+    </label>
+  );
+}
+function Toggle({
+  label,
+  checked,
+  onChange,
+  locked = false,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+  locked?: boolean;
+}) {
+  return (
+    <label className="editor-toggle">
+      <span>
+        <b>{label}</b>
+        <small>{locked ? "Obrigatória" : "Configurável"}</small>
+      </span>
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={locked}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+    </label>
+  );
+}
+function Preview({ s }: { s: PageSettings }) {
+  return (
+    <aside className="live-preview">
+      <small>PRÉVIA AO VIVO</small>
+      <div className="preview-phone">
+        <header>
+          <b>{s.businessName}</b>
+          <i>☰</i>
+        </header>
+        <section
+          style={{
+            background: `linear-gradient(145deg,${s.primaryColor},${s.secondaryColor})`,
+          }}
+        >
+          <small>{s.category}</small>
+          <h2>{s.tagline}</h2>
+          <p>{s.description}</p>
+          <button>Ver cardápio →</button>
+        </section>
+        <div className="preview-actions">
+          <span>
+            ⌑<small>Cardápio</small>
+          </span>
+          <span>
+            ⌁<small>Wi-Fi</small>
+          </span>
+          <span>
+            ★<small>Avaliar</small>
+          </span>
+          <span>
+            ↗<small>WhatsApp</small>
+          </span>
+        </div>
+        {s.showPromo && (
+          <article>
+            <small>DESTAQUE DA CASA</small>
+            <b>Pizza feita para compartilhar.</b>
+          </article>
+        )}
+        <div className="preview-review">
+          ★★★★★<b>Sua opinião importa.</b>
+        </div>
+        <nav>
+          <span>
+            ⌂<small>Início</small>
+          </span>
+          {s.shortcuts.map((item) => (
+            <span key={item}>
+              {item === "Avaliar" ? "★" : item === "Wi-Fi" ? "⌁" : "•"}
+              <small>{item}</small>
+            </span>
+          ))}
+        </nav>
+      </div>
+    </aside>
+  );
+}

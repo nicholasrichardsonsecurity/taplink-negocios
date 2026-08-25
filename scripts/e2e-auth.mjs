@@ -34,8 +34,14 @@ const publish=await fetch(`${url}/api/page-settings`,{method:"PUT",headers:{"con
 assert.equal(publish.status,200,`Publicação falhou: ${await publish.text()}`);
 const publicPage=await fetch(`${url}/p/empresa-ci`);assert.equal(publicPage.status,200);const publishedHtml=await publicPage.text();assert.match(publishedHtml,/Sabor publicado pelo CI/);assert.doesNotMatch(publishedHtml,/senha-wifi-ci/);
 const wifi=await fetch(`${url}/api/public/empresa-ci/wifi`);assert.equal(wifi.status,200);assert.equal((await wifi.json()).password,"senha-wifi-ci");
+const wifiQr=await fetch(`${url}/api/public/empresa-ci/wifi-qr`);assert.equal(wifiQr.status,200);assert.equal(wifiQr.headers.get("content-type"),"image/png");const qrBytes=new Uint8Array(await wifiQr.arrayBuffer());assert.deepEqual([...qrBytes.slice(0,8)],[137,80,78,71,13,10,26,10]);
 const draftSettings={...settings,tagline:"Alteração ainda em rascunho."};
 const draft=await fetch(`${url}/api/page-settings`,{method:"PUT",headers:{"content-type":"application/json",cookie},body:JSON.stringify({settings:draftSettings,publish:false})});assert.equal(draft.status,200);
 const editorState=await fetch(`${url}/api/page-settings`,{headers:{cookie}});assert.equal((await editorState.json()).settings.tagline,"Alteração ainda em rascunho.");
 const stillPublished=await fetch(`${url}/p/empresa-ci`);const stillPublishedHtml=await stillPublished.text();assert.match(stillPublishedHtml,/Sabor publicado pelo CI/);assert.doesNotMatch(stillPublishedHtml,/Alteração ainda em rascunho/);
-console.log("Bootstrap, login, editor, publicação, Wi-Fi protegido, rascunho e isolamento validados.");
+const createCompany=await fetch(`${url}/api/admin/companies`,{method:"POST",headers:{"content-type":"application/json",cookie},body:JSON.stringify({name:"Segunda Empresa CI",slug:"segunda-empresa-ci"})});assert.equal(createCompany.status,201,"Cadastro de empresa falhou");const secondCompany=(await createCompany.json()).company;
+const companies=await fetch(`${url}/api/admin/companies`,{headers:{cookie}});const companyList=(await companies.json()).companies;const firstCompany=companyList.find(company=>company.slug==="empresa-ci");assert.ok(firstCompany);
+const switchCompany=await fetch(`${url}/api/session/organization`,{method:"POST",headers:{"content-type":"application/json",cookie},body:JSON.stringify({organizationId:secondCompany.id})});assert.equal(switchCompany.status,200);
+const secondDashboard=await fetch(`${url}/dashboard`,{headers:{cookie}});assert.match(await secondDashboard.text(),/Segunda Empresa CI/);
+await fetch(`${url}/api/session/organization`,{method:"POST",headers:{"content-type":"application/json",cookie},body:JSON.stringify({organizationId:firstCompany.id})});
+console.log("Bootstrap, login, editor, QR Wi-Fi, rascunho, administração e troca de empresa validados.");

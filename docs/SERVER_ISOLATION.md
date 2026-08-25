@@ -13,7 +13,8 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - Compose do TapLink validado estruturalmente;
 - aplicação e migration validadas no GitHub Actions com PostgreSQL descartável;
 - deploy bloqueado até concluir a auditoria somente leitura.
-- migration `0001_lucky_masked_marvel.sql` criada para separar rascunho, publicação e segredos; ainda não aplicada no Debian.
+- migrations `0001_lucky_masked_marvel.sql` e `0002_smart_garia.sql` criadas; ainda não aplicadas no Debian;
+- MinIO passou a ser requisito da aplicação para uploads, sempre restrito à rede interna.
 
 ## Regra de ouro
 
@@ -108,7 +109,8 @@ Antes do primeiro deploy:
 - aplicação acessível pelo proxy ou túnel autorizado;
 - `/api/health` respondendo com banco conectado;
 - migration aplicada exatamente uma vez;
-- migrations `0000` e `0001` registradas na tabela de controle do Drizzle;
+- migrations `0000`, `0001` e `0002` registradas na tabela de controle do Drizzle;
+- upload e recuperação de uma imagem de teste confirmados sem expor a porta do MinIO;
 - logs sem segredos;
 - reinício automático validado somente nos containers TapLink;
 - backup e restauração documentados;

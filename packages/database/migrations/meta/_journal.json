@@ -15,6 +15,13 @@
       "when": 1787624153541,
       "tag": "0001_lucky_masked_marvel",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787625760468,
+      "tag": "0002_smart_garia",
+      "breakpoints": true
     }
   ]
 }

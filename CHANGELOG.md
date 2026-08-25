@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0 — 25/08/2026
+
+- identidade visual oficial e README renovado;
+- upload de logo PNG, JPEG e WebP com limite de 5 MB;
+- imagens convertidas para WebP, redimensionadas e sem metadados;
+- armazenamento privado compatível com MinIO/S3;
+- tabela `media_assets` e entrega pública somente de ativos autorizados;
+- QR Code Wi-Fi gerado internamente, sem API externa;
+- função administrativa de plataforma e cadastro de empresas;
+- empresa ativa persistida na sessão e seletor multiempresa;
+- migration `0002_smart_garia.sql` e testes de URI Wi-Fi adicionados.
+
 ## 0.3.0 — 25/08/2026
 
 - editor white-label autenticado criado;
