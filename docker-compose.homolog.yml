@@ -1,0 +1,42 @@
+name: taplink-homolog
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - taplink_postgres_data:/var/lib/postgresql/data
+    networks:
+      - taplink_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data
+    environment:
+      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY}
+    volumes:
+      - taplink_uploads:/data
+    networks:
+      - taplink_internal
+
+networks:
+  taplink_internal:
+    name: taplink_homolog_internal
+    internal: true
+
+volumes:
+  taplink_postgres_data:
+    name: taplink_homolog_postgres_data
+  taplink_uploads:
+    name: taplink_homolog_uploads
