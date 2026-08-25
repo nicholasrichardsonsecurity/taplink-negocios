@@ -28,6 +28,15 @@ O resultado de uma auditoria representa apenas o instante em que foi executada e
 - tokens e senhas não devem aparecer em logs, issues, commits ou mensagens;
 - banco, cache e armazenamento não podem publicar portas diretamente na internet.
 
+## Skills e agentes de desenvolvimento
+
+- skills de terceiros devem ser tratados como software com acesso potencial ao shell e aos arquivos;
+- `SKILL.md`, scripts e referências devem ser revisados antes da instalação ou atualização;
+- agentes de análise não podem acessar `.env`, backups, credenciais ou o ambiente LoopClub;
+- ferramentas offline são preferidas; acesso de rede exige finalidade e autorização explícitas;
+- nenhum relatório produzido por agente substitui testes, CI, auditoria ou aprovação humana;
+- componentes incorporados ao repositório exigem revisão de licença, versão fixada e atribuição.
+
 ## Autenticação e autorização
 
 - mensagens de login não devem revelar se o e-mail existe;
