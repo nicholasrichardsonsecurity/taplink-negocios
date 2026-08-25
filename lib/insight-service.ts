@@ -1,6 +1,7 @@
 import { and, count, eq, gte, lt, sql, sum } from "drizzle-orm";
 import { db } from "@/packages/database/client";
 import { analyticsEvents, insightRuns, organizationAiSettings } from "@/packages/database/schema";
+import { getOrganizationEntitlements } from "@/lib/entitlements";
 import { buildDeterministicInsights, InsightReport, InsightSnapshot, safeInsightSnapshot } from "@/lib/insights";
 
 const model = () => process.env.OPENAI_INSIGHTS_MODEL || "gpt-5-mini";
@@ -55,7 +56,8 @@ export async function createInsightRun(organizationId: string, userId: string) {
   const settings = await getAiSettings(organizationId);
   const usage = await monthlyUsage(organizationId);
   let report = fallback, status: "generated" | "fallback" = "fallback", provider = "rules", inputTokens = 0, outputTokens = 0, errorCode: string | null = null;
-  const allowed = settings.enabled && process.env.AI_INSIGHTS_ENABLED === "true" && Boolean(process.env.OPENAI_API_KEY) && usage.requests < settings.monthlyRequestLimit && usage.tokens < settings.monthlyTokenLimit;
+  const entitlements = await getOrganizationEntitlements(organizationId);
+  const allowed = entitlements.limits.ai && settings.enabled && process.env.AI_INSIGHTS_ENABLED === "true" && Boolean(process.env.OPENAI_API_KEY) && usage.requests < settings.monthlyRequestLimit && usage.tokens < settings.monthlyTokenLimit;
   if (allowed) {
     try { const generated = await generateWithOpenAi(snapshot); report = generated.report; inputTokens = generated.inputTokens; outputTokens = generated.outputTokens; provider = "openai"; status = "generated"; }
     catch (error) { errorCode = error instanceof Error ? error.message.slice(0, 80) : "PROVIDER_ERROR"; }

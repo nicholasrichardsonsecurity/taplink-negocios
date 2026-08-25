@@ -15,6 +15,14 @@ async function request(path: string, init: RequestInit = {}) {
   return data;
 }
 
+export async function updateAsaasSubscription(id: string, changes: { valueCents?: number; planName?: string; status?: "ACTIVE" | "INACTIVE" }) {
+  await request(`/subscriptions/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify({ ...(changes.valueCents !== undefined ? { value: changes.valueCents / 100, description: `TapLink Negócios — ${changes.planName}`, updatePendingPayments: false } : {}), ...(changes.status ? { status: changes.status } : {}) }) });
+}
+
+export async function cancelAsaasSubscription(id: string) {
+  await request(`/subscriptions/${encodeURIComponent(id)}`, { method: "DELETE" });
+}
+
 export async function ensureAsaasCustomer(input: { organizationId: string; name: string; cpfCnpj: string; email: string; phone?: string }) {
   const externalReference = `taplink:${input.organizationId}`;
   const found = await request(`/customers?externalReference=${encodeURIComponent(externalReference)}&limit=1`) as { data?: { id?: string }[] };

@@ -13,7 +13,7 @@ export default async function CompaniesAdmin() {
     .orderBy(asc(organizations.name));
   return (
     <main style={{ maxWidth: 900, margin: "48px auto", padding: 24 }}>
-      <a href="/dashboard">← Painel</a>
+      <a href="/admin/operations">← Operação da plataforma</a>
       <h1>Empresas</h1>
       <p>Administração interna da plataforma TapLink Negócios.</p>
       <form

@@ -43,6 +43,13 @@
       "when": 1787632233734,
       "tag": "0005_naive_sharon_carter",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1787633431965,
+      "tag": "0006_revise_plan_entitlements",
+      "breakpoints": true
     }
   ]
 }

@@ -24,6 +24,8 @@ A Missão 1.6 adicionou relatórios e recomendações locais, com uso opcional d
 
 A Missão 1.7 adicionou catálogo comercial e integração de assinaturas com o Asaas exclusivamente em sandbox. Nenhuma cobrança real está autorizada. Dados financeiros demonstrativos não devem representar clientes reais; produção depende de contrato, revisão LGPD, HTTPS, segredos exclusivos, conciliação e pentest.
 
+A Missão 1.8 adicionou o painel interno de operação financeira e aplicação de direitos de plano. Ações administrativas permanecem limitadas ao sandbox, exigem confirmação e são auditadas. A separação comercial entre hardware e assinatura é uma decisão de produto; não constitui oferta pública definitiva nem autoriza faturamento real.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

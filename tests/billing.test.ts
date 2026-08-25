@@ -1,9 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isAllowedInvoiceUrl, paymentStatusFromEvent, PLAN_CATALOG, subscriptionStatusFromPayment } from "../lib/billing";
+import { allowedAnalyticsDays, isAllowedInvoiceUrl, paymentStatusFromEvent, PLAN_CATALOG, subscriptionStatusFromPayment } from "../lib/billing";
 
 test("catálogo comercial mantém códigos e preços esperados", () => {
   assert.deepEqual(PLAN_CATALOG.map(plan => [plan.code, plan.priceCents]), [["essencial", 3990], ["negocios", 6990], ["premium", 9990]]);
+  assert.equal(PLAN_CATALOG.some(plan => "plates" in plan.limits), false);
+});
+test("limita o histórico ao direito do plano", () => {
+  assert.equal(allowedAnalyticsDays(90, 30), 30);
+  assert.equal(allowedAnalyticsDays(30, 90), 30);
 });
 test("traduz somente eventos financeiros conhecidos", () => {
   assert.equal(paymentStatusFromEvent("PAYMENT_RECEIVED"), "received");

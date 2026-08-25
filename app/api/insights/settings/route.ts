@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { getSessionContext } from "@/lib/auth/session";
 import { db } from "@/packages/database/client";
 import { auditLogs, organizationAiSettings } from "@/packages/database/schema";
+import { getOrganizationEntitlements } from "@/lib/entitlements";
 
 export async function POST(request: Request) {
   const session = await getSessionContext();
@@ -9,6 +10,8 @@ export async function POST(request: Request) {
   if (session.role !== "owner") return Response.json({ error: "Somente o proprietário pode alterar a IA." }, { status: 403 });
   const data = await request.formData();
   const enabled = data.get("enabled") === "on";
+  const entitlements = await getOrganizationEntitlements(session.organizationId);
+  if (enabled && !entitlements.limits.ai) return Response.json({ error: "IA generativa não disponível no plano atual." }, { status: 403 });
   const monthlyRequestLimit = Math.min(100, Math.max(1, Number(data.get("requestLimit")) || 20));
   const monthlyTokenLimit = Math.min(500000, Math.max(1000, Number(data.get("tokenLimit")) || 50000));
   await db.transaction(async tx => {

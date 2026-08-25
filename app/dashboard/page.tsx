@@ -14,7 +14,7 @@ export default async function Dashboard() {
           <a href="/dashboard/page-editor">Página pública</a>
           <a href="/dashboard/organizations">Trocar empresa</a>
           {s.platformRole === "platform_admin" && (
-            <a href="/admin/companies">Administrar empresas</a>
+            <a href="/admin/operations">Operação da plataforma</a>
           )}
           <a>Placas e NFC</a>
           <a href="/dashboard/analytics">Analytics</a>
