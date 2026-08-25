@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — 25/08/2026
+
+- testes unitários da autenticação adicionados;
+- autorização explícita por usuário e empresa criada;
+- teste de isolamento entre dois tenants implementado;
+- teste ponta a ponta de bootstrap, login, cookie e dashboard criado;
+- CI configurado com PostgreSQL real e migration automática;
+- bloqueio de acesso anônimo e bootstrap único cobertos pela automação.
+
 ## 0.2.0 — 25/08/2026
 
 - aplicação Next.js 16 e React 19 criada;

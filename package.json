@@ -12,6 +12,9 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/**/*.test.ts",
+    "test:unit": "node --import tsx --test tests/password.test.ts",
+    "test:integration": "node --import tsx --test tests/database.integration.test.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "check:ownership": "node scripts/check-ownership.mjs",
@@ -30,6 +33,7 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "drizzle-kit": "0.31.10",
+    "tsx": "4.23.12",
     "typescript": "5.9.3"
   }
 }

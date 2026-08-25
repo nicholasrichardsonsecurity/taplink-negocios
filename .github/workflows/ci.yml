@@ -1,0 +1,57 @@
+name: Qualidade e integração
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: taplink_ci
+          POSTGRES_USER: taplink_ci
+          POSTGRES_PASSWORD: taplink_ci_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U taplink_ci -d taplink_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      APP_URL: http://127.0.0.1:3000
+      DATABASE_URL: postgresql://taplink_ci:taplink_ci_password@127.0.0.1:5432/taplink_ci
+      BOOTSTRAP_TOKEN: ci-bootstrap-token-with-more-than-16-chars
+      SESSION_SECRET: ci-session-secret-with-more-than-32-characters
+      ENCRYPTION_KEY: ci-encryption-key-with-more-than-32-characters
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check:ownership
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm run db:migrate
+      - run: npm run build
+      - name: Iniciar aplicação
+        run: |
+          npm start > /tmp/taplink-next.log 2>&1 &
+          echo $! > /tmp/taplink-next.pid
+      - run: node scripts/wait-for-health.mjs
+      - run: node scripts/e2e-auth.mjs
+      - run: npm run test:integration
+      - name: Mostrar logs em caso de falha
+        if: failure()
+        run: cat /tmp/taplink-next.log || true
