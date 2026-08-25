@@ -333,3 +333,22 @@ export const billingWebhookEvents = pgTable("billing_webhook_events", {
   receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
   processedAt: timestamp("processed_at", { withTimezone: true }),
 });
+
+export const securityRateLimits = pgTable("security_rate_limits", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  keyHash: text("key_hash").notNull().unique(),
+  scope: text("scope").notNull(),
+  attempts: integer("attempts").notNull().default(1),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index("security_rate_limits_expiry_idx").on(t.expiresAt)]);
+
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  tokenHash: text("token_hash").notNull().unique(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index("password_reset_tokens_user_idx").on(t.userId, t.createdAt), index("password_reset_tokens_expiry_idx").on(t.expiresAt)]);

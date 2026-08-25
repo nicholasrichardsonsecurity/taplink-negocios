@@ -82,6 +82,8 @@ Planos e billing concluídos na Missão 1.7: Essencial R$ 39,90, Negócios R$ 69
 
 Operação administrativa concluída na Missão 1.8: indicadores internos, carteira de empresas, acompanhamento de webhooks, alteração de plano, suspensão, reativação e cancelamento com confirmação, atualização prévia do Asaas sandbox e auditoria. Os direitos de analytics, CSV e IA são verificados no backend.
 
+Endurecimento de acesso concluído na Missão 1.9A: rate limiting compartilhado no PostgreSQL, CSRF vinculado à sessão nas operações financeiras, recuperação sem enumeração de conta, token de uso único por 30 minutos, redefinição com revogação total de sessões e revogação administrativa auditável. A entrega por e-mail usa Resend somente quando configurado com domínio e chave exclusivos.
+
 ### Modelo comercial físico + software
 
 - placas 10 × 15 cm, tags NFC, impressão UV, embalagem, frete e instalação são cobrados como hardware ou serviço de implantação;
@@ -98,4 +100,5 @@ Operação administrativa concluída na Missão 1.8: indicadores internos, carte
 3. Missão 1.6: concluída;
 4. Missão 1.7: concluída;
 5. Missão 1.8: concluída;
-6. Missão 1.9: segurança, homologação e piloto físico.
+6. Missão 1.9A: endurecimento de acesso concluído;
+7. Missão 1.9B: auditoria somente leitura do Debian, conciliação e gate do piloto.

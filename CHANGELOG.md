@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.9.0 — 25/08/2026
+
+- rate limiting persistente no PostgreSQL adicionado ao login e à recuperação de senha;
+- identificadores dos limites protegidos por HMAC e sem persistência de IP ou e-mail em texto;
+- CSRF vinculado à sessão aplicado à cobrança, operação financeira e logout;
+- fluxo de recuperação com resposta uniforme contra enumeração criado;
+- token opaco de uso único, hash no banco e expiração de 30 minutos implementados;
+- redefinição de senha com revogação transacional de todas as sessões adicionada;
+- painel administrativo de sessões e revogação auditável criado;
+- entrega opcional por Resend com chave de idempotência e sem log do token;
+- secret scan proprietário integrado ao GitHub Actions;
+- migration `0007_security_controls.sql` e testes integrados adicionados;
+- auditoria Debian explicitamente mantida como pendência da Missão 1.9B.
+
 ## 0.8.0 — 25/08/2026
 
 - painel `/admin/operations` com indicadores de empresas, receita histórica e webhooks criado;

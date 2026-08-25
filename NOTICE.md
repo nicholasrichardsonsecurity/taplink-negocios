@@ -26,6 +26,8 @@ A Missão 1.7 adicionou catálogo comercial e integração de assinaturas com o 
 
 A Missão 1.8 adicionou o painel interno de operação financeira e aplicação de direitos de plano. Ações administrativas permanecem limitadas ao sandbox, exigem confirmação e são auditadas. A separação comercial entre hardware e assinatura é uma decisão de produto; não constitui oferta pública definitiva nem autoriza faturamento real.
 
+A Missão 1.9A adicionou controles de acesso, recuperação de senha e revogação de sessões. O Resend é apenas uma integração opcional e nenhum segredo ou token real foi configurado. O Debian e o LoopClub não foram acessados ou modificados; a homologação continua bloqueada até a auditoria 1.9B.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

@@ -41,6 +41,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:ownership
+      - run: npm run security:secrets
       - run: npm run typecheck
       - run: npm run test:unit
       - run: npm run db:migrate

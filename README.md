@@ -55,6 +55,8 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 | Missão 1.6 — inteligência opcional | Concluída | Insights locais, IA opcional, orçamento e aprovação |
 | Missão 1.7 — planos e cobrança | Concluída | Catálogo, trial, Asaas sandbox, webhook e financeiro |
 | Missão 1.8 — operação administrativa | Concluída | Indicadores, ações seguras, direitos de plano e auditoria |
+| Missão 1.9A — endurecimento de acesso | Concluída | Rate limit, CSRF, reset de senha e revogação de sessões |
+| Missão 1.9B — auditoria Debian | Pendente | Exige inspeção somente leitura com evidência real |
 | Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
 ## Funcionalidades implementadas
@@ -91,6 +93,11 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - alteração de plano, suspensão, reativação e cancelamento com confirmação e auditoria;
 - direitos de analytics, CSV e IA aplicados pelo backend;
 - hardware NFC comercialmente separado da assinatura do software;
+- rate limiting persistente para login e recuperação de senha;
+- CSRF vinculado à sessão em cobrança, administração financeira e logout;
+- redefinição por token opaco, hash no banco, validade de 30 minutos e uso único;
+- revogação automática de sessões após redefinição e revogação manual pelo administrador;
+- entrega opcional de recuperação por Resend sem registrar token em logs;
 - migrations PostgreSQL versionadas;
 - CI com banco real e testes ponta a ponta.
 
@@ -142,6 +149,9 @@ taplink-negocios/
 | `/dashboard/billing` | Autenticado | Planos, assinatura e histórico financeiro |
 | `/admin/companies` | Administrador da plataforma | Cadastro de empresas |
 | `/admin/operations` | Administrador da plataforma | Operação financeira e indicadores |
+| `/admin/security` | Administrador da plataforma | Sessões e revogação administrativa |
+| `/forgot-password` | Público | Solicitação uniforme de recuperação |
+| `/reset-password` | Público | Redefinição por token de uso único |
 | `/p/[slug]` | Público | Página publicada |
 | `/api/health` | Técnico | Saúde da aplicação e banco |
 | `/api/page-settings` | Autenticado | Rascunho e publicação |
@@ -182,6 +192,7 @@ O primeiro proprietário é criado uma única vez por `POST /api/auth/bootstrap`
 
 ```bash
 npm run check:ownership
+npm run security:secrets
 npm run typecheck
 npm run test:unit
 npm run build
@@ -268,12 +279,11 @@ Consulte [`SECURITY.md`](SECURITY.md).
 
 ## Próxima missão
 
-### Missão 1.9 — segurança e homologação controlada
+### Missão 1.9B — auditoria e homologação controlada
 
-- rate limiting e proteção CSRF nas operações críticas;
-- recuperação de senha e revogação administrativa de sessões;
 - conciliação consultiva com o Asaas e alertas operacionais;
 - auditoria somente leitura do Debian e plano de implantação;
+- secret scan e revisão dos headers/CSP antes da exposição;
 - piloto físico Lisarojo após gate de segurança.
 
 ## Titularidade

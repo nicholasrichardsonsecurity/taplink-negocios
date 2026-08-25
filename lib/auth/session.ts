@@ -64,6 +64,7 @@ export async function getSessionContext() {
       organizationName: organizations.name,
       organizationSlug: organizations.slug,
       role: memberships.role,
+      sessionTokenHash: sessions.tokenHash,
     })
     .from(sessions)
     .innerJoin(users, eq(users.id, sessions.userId))

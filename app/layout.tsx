@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
+import "./auth-security.css";
 import "./analytics.css";
 import "./insights.css";
 import "./billing.css";

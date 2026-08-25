@@ -19,6 +19,7 @@
     "db:migrate": "drizzle-kit migrate",
     "analytics:purge": "node --import tsx scripts/purge-analytics.ts",
     "check:ownership": "node scripts/check-ownership.mjs",
+    "security:secrets": "node scripts/scan-secrets.mjs",
     "check": "npm run check:ownership && npm run typecheck && npm run build"
   },
   "dependencies": {
