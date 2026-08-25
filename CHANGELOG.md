@@ -1,5 +1,14 @@
 # Changelog
 
+## Não lançado — Missão 1.9B.2
+
+- primeira auditoria somente leitura do Debian registrada;
+- capacidade de disco e memória aprovada para homologação;
+- portas do LoopClub confirmadas em loopback e PostgreSQL sem publicação no host;
+- porta padrão do TapLink alterada de `3300` para `3400` para eliminar colisão;
+- rede de saída do serviço web separada da rede interna exclusiva do PostgreSQL e MinIO;
+- deploy mantido bloqueado até confirmar firewall, Caddy, backup e rollback.
+
 ## 0.9.1 — 25/08/2026
 
 - CSP, COOP e CORP aplicados às respostas da aplicação;

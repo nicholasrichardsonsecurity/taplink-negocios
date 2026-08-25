@@ -6,13 +6,20 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 
 ## Situação em 25/08/2026
 
-- servidor identificado, mas ainda não auditado pelo projeto;
+- auditoria inicial somente leitura recebida e registrada em 25/08/2026;
+- host confirmado como Debian 12 `bookworm`, kernel `6.1.0-49-amd64`, virtualização KVM e arquitetura x86-64;
+- Docker Engine `29.6.1`, API `1.55`, Compose `v5.2.0` e Caddy `v2.11.4` confirmados ativos;
+- disco raiz com 195 GB, 46 GB usados e 141 GB disponíveis; memória com 7,8 GiB totais e 6,3 GiB disponíveis no momento da coleta;
+- portas públicas confirmadas: `22`, `80` e `443`; administração do Caddy restrita a `127.0.0.1:2019`;
+- LoopClub confirmado em `127.0.0.1:3100`, `127.0.0.1:3200` e `127.0.0.1:3300`; seus bancos PostgreSQL não publicam porta no host;
+- containers existentes consumiam aproximadamente 375 MiB de memória e CPU praticamente ociosa durante a coleta;
+- porta `3400` selecionada para o TapLink, ligada exclusivamente a `127.0.0.1`;
 - nenhum comando do TapLink executado no Debian;
 - nenhum container, volume, diretório, usuário ou porta criado;
 - LoopClub permanece intocado;
 - Compose do TapLink validado estruturalmente;
 - aplicação e migration validadas no GitHub Actions com PostgreSQL descartável;
-- deploy bloqueado até concluir a auditoria somente leitura.
+- deploy permanece bloqueado até confirmar firewall, configuração aplicável do Caddy, política de backup e procedimento de rollback;
 - a estratégia de agentes não altera o servidor: nenhum skill, modelo ou serviço de IA será instalado no Debian nesta etapa.
 - migrations `0001_lucky_masked_marvel.sql` e `0002_smart_garia.sql` criadas; ainda não aplicadas no Debian;
 - migration `0003_fluffy_tarot.sql` criada para analytics; ainda não aplicada no Debian;
@@ -22,7 +29,7 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - migration `0005_naive_sharon_carter.sql` criada para planos, assinaturas, cobranças e eventos; ainda não aplicada no Debian;
 - migration `0006_revise_plan_entitlements.sql` criada para separar direitos do software da quantidade de placas; ainda não aplicada no Debian;
 - migration `0007_security_controls.sql` criada para rate limiting e recuperação de senha; ainda não aplicada no Debian;
-- a Missão 1.9A não acessou nem alterou o Debian; a auditoria real permanece pendente na Missão 1.9B.2;
+- a Missão 1.9A não acessou nem alterou o Debian; a primeira coleta da Missão 1.9B.2 foi concluída pelo operador;
 - a Missão 1.9B.1 concluiu controles em código, mas não constitui evidência de auditoria ou deploy no host;
 - Asaas permanece em sandbox e usa somente saída HTTPS; webhook não será exposto no IP sem domínio, TLS e auditoria;
 
@@ -37,14 +44,15 @@ O primeiro acesso será exclusivamente diagnóstico e somente leitura. Nenhum co
 | Projeto Compose | `taplink-homolog` |
 | Diretório sugerido | `/opt/taplink/taplink-negocios` |
 | Rede interna | `taplink_homolog_internal` |
+| Rede de saída da aplicação | `taplink_homolog_edge` |
 | Banco | `taplink` |
 | Usuário do banco | `taplink_app` |
 | Volume PostgreSQL | `taplink_homolog_postgres_data` |
 | Volume de arquivos | `taplink_homolog_uploads` |
 | Credenciais | Exclusivas e geradas aleatoriamente |
-| Porta sugerida da aplicação | A definir após auditoria; ligada a `127.0.0.1` |
+| Porta da aplicação | `127.0.0.1:3400` |
 
-O PostgreSQL, o armazenamento e qualquer cache não terão portas publicadas no host.
+O PostgreSQL, o armazenamento e qualquer cache não terão portas publicadas no host. Somente o serviço web participa da rede `taplink_homolog_edge`, necessária para saídas HTTPS como Asaas e Resend; banco e MinIO permanecem exclusivamente na rede interna.
 
 ## Auditoria inicial somente leitura
 
@@ -73,9 +81,21 @@ Também registrar, sem revelar segredos:
 - política atual de backup;
 - versão do Debian, Docker e Compose.
 
+## Resultado e pendências da auditoria
+
+O gate de capacidade e colisão de portas foi aprovado. A coleta comprovou recursos suficientes para a homologação e confirmou que `3400` estava livre no momento da auditoria.
+
+Ainda faltam evidências somente leitura antes do primeiro deploy:
+
+- regras efetivas de firewall;
+- trecho aplicável da configuração do Caddy, sem segredos;
+- política e destino dos backups;
+- teste documentado de restauração e rollback;
+- definição do domínio antes de login público, webhook ou cobrança real.
+
 ## Portas
 
-Nenhuma porta será definida definitivamente antes da auditoria. A aplicação poderá iniciar ligada apenas a `127.0.0.1`, sendo publicada depois por proxy reverso. O IP público isolado não substitui HTTPS para login ou cobrança.
+A aplicação usará `127.0.0.1:3400`, sem exposição direta na interface pública. A publicação posterior será feita exclusivamente pelo Caddy. O IP público isolado não substitui HTTPS para login ou cobrança.
 
 Até existir domínio e certificado HTTPS:
 
@@ -100,8 +120,8 @@ Até existir domínio e certificado HTTPS:
 
 Antes do primeiro deploy:
 
-1. confirmar espaço e memória;
-2. mapear portas em uso;
+1. confirmar novamente espaço, memória e disponibilidade da porta `3400`;
+2. registrar backup e rollback do Caddy e confirmar firewall;
 3. criar usuário de sistema dedicado;
 4. criar diretório próprio;
 5. gerar segredos exclusivos;

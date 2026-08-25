@@ -13,12 +13,13 @@ services:
       PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
     ports:
-      - "127.0.0.1:${APP_PORT:-3300}:3000"
+      - "127.0.0.1:${APP_PORT:-3400}:3000"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - taplink_internal
+      - taplink_edge
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
       interval: 20s
@@ -58,6 +59,8 @@ networks:
   taplink_internal:
     name: taplink_homolog_internal
     internal: true
+  taplink_edge:
+    name: taplink_homolog_edge
 
 volumes:
   taplink_postgres_data:
