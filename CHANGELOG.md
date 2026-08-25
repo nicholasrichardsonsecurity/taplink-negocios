@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0 — 25/08/2026
+
+- eventos públicos de visualização e ação adicionados;
+- origens NFC, QR Code, direta e não identificada suportadas;
+- visitante anonimizado com HMAC rotativo diário, sem persistir IP ou user-agent;
+- deduplicação por evento em janelas de 15 minutos;
+- dashboard de analytics com períodos de 7, 30 e 90 dias;
+- métricas, gráfico diário, ranking de ações e origens implementados;
+- exportação CSV autenticada adicionada;
+- retenção configurável e comando `analytics:purge` criados;
+- migration `0003_fluffy_tarot.sql` e testes de privacidade adicionados.
+
 ## Não lançado
 
 - estratégia de uso de IA e agentes documentada;

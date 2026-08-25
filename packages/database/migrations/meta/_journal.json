@@ -22,6 +22,13 @@
       "when": 1787625760468,
       "tag": "0002_smart_garia",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1787628329630,
+      "tag": "0003_fluffy_tarot",
+      "breakpoints": true
     }
   ]
 }

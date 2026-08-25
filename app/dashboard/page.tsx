@@ -17,7 +17,7 @@ export default async function Dashboard() {
             <a href="/admin/companies">Administrar empresas</a>
           )}
           <a>Placas e NFC</a>
-          <a>Analytics</a>
+          <a href="/dashboard/analytics">Analytics</a>
           <a>Equipe</a>
           <a>Plano e cobrança</a>
         </nav>
@@ -40,11 +40,11 @@ export default async function Dashboard() {
           </div>
         </header>
         <div className="welcome">
-          <small>MISSÃO 1.4</small>
-          <h2>Seu negócio, sua identidade.</h2>
+          <small>MISSÃO 1.5</small>
+          <h2>Decisões com dados reais.</h2>
           <p>
-            Edite a página white-label e publique as alterações sem tocar no
-            código ou regravar a placa NFC.
+            Acompanhe visualizações, origens e ações sem identificar seus
+            visitantes.
           </p>
         </div>
         <div className="metrics">

@@ -51,6 +51,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 | Missão 1.2 — integração real | Concluída | CI com banco real, login e isolamento de tenants |
 | Missão 1.3 — editor white-label | Concluída | Rascunho, publicação, Wi-Fi cifrado e página por slug |
 | Missão 1.4 — arquivos e gestão | Concluída | Upload, QR Code e painel multiempresa |
+| Missão 1.5 — analytics e eventos | Concluída | Eventos anônimos, gráficos, origens e CSV |
 | Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
 ## Funcionalidades implementadas
@@ -72,6 +73,9 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - arquivos privados em S3/MinIO e entrega pública por ativo autorizado;
 - QR Code Wi-Fi gerado localmente, sem API de terceiros;
 - cadastro interno e troca segura de empresa ativa;
+- analytics anônimo com visualizações, visitantes, ações e origens;
+- deduplicação em janelas de 15 minutos e retenção configurável;
+- períodos de 7, 30 e 90 dias e exportação CSV;
 - migrations PostgreSQL versionadas;
 - CI com banco real e testes ponta a ponta.
 
@@ -118,6 +122,7 @@ taplink-negocios/
 | `/dashboard` | Autenticado | Visão geral da empresa |
 | `/dashboard/page-editor` | Autenticado | Editor white-label |
 | `/dashboard/organizations` | Autenticado | Seleção da empresa ativa |
+| `/dashboard/analytics` | Autenticado | Métricas e gráficos da empresa |
 | `/admin/companies` | Administrador da plataforma | Cadastro de empresas |
 | `/p/[slug]` | Público | Página publicada |
 | `/api/health` | Técnico | Saúde da aplicação e banco |
@@ -125,6 +130,8 @@ taplink-negocios/
 | `/api/public/[slug]/wifi` | Público | Wi-Fi publicado sob demanda |
 | `/api/public/[slug]/wifi-qr` | Público | QR Wi-Fi gerado localmente |
 | `/api/uploads/logo` | Editor autorizado | Upload seguro da logo |
+| `/api/public/[slug]/events` | Público | Coleta anônima e deduplicada |
+| `/api/analytics/export` | Autenticado | Exportação CSV por período |
 
 ## Desenvolvimento local
 
@@ -224,13 +231,13 @@ Consulte [`SECURITY.md`](SECURITY.md).
 
 ## Próxima missão
 
-### Missão 1.5 — analytics e eventos
+### Missão 1.6 — inteligência opcional
 
-- registro de toque NFC, leitura de QR e ações por botão;
-- dashboard com gráficos por período, empresa e origem;
-- proteção contra tráfego automatizado e duplicidades;
-- exportação de relatórios;
-- consentimento, retenção e privacidade preparados para LGPD.
+- resumos automáticos baseados nos analytics;
+- recomendações de atalhos e campanhas;
+- orçamento e limites de IA por empresa;
+- fallback integral sem modelo generativo;
+- avaliação de qualidade e aprovação humana.
 
 ## Titularidade
 

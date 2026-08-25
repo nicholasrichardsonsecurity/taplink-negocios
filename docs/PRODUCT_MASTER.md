@@ -74,10 +74,12 @@ Conceito, modelos white-label, página Lisarojo e protótipo visual do editor va
 
 Repositório, propriedade intelectual, arquitetura, Docker, banco, autenticação e isolamento multiempresa.
 
+Analytics anônimo concluído na Missão 1.5: visualizações, ações, origem NFC/QR/direta, deduplicação, períodos, gráficos, CSV e retenção configurável.
+
 ### Próximos marcos
 
 1. Missões 1.1 a 1.4: concluídas;
-2. Missão 1.5: analytics e relatórios determinísticos;
+2. Missão 1.5: concluída;
 3. Missão 1.6: assistente e relatórios inteligentes opcionais;
 4. Asaas e planos;
 5. painel interno completo;

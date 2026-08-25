@@ -18,6 +18,8 @@ A Missão 1.3 incorporou o editor white-label e a página pública dinâmica. Es
 
 A Missão 1.4 adicionou upload de identidade visual, QR Wi-Fi, seleção multiempresa e administração interna. Os recursos continuam em pré-produção e não autorizam uso de dados ou credenciais reais antes dos controles de implantação, LGPD e segurança previstos.
 
+A Missão 1.5 adicionou estatísticas anônimas. Não são persistidos endereço IP, user-agent, nome, contato ou identificador estável do visitante. A política de privacidade e a base legal deverão ser revisadas antes do piloto com público real.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

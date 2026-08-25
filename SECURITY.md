@@ -15,6 +15,10 @@
 - administração: função `platform_admin` separada das funções de cada estabelecimento;
 - tenant ativo: gravado na sessão somente após comprovar associação do usuário;
 - QR Wi-Fi: gerado localmente e retornado com `no-store`;
+- analytics: IP e user-agent usados apenas em memória para gerar HMAC diário e nunca persistidos;
+- deduplicação: eventos iguais do mesmo visitante anônimo são consolidados por 15 minutos;
+- retenção: `ANALYTICS_RETENTION_DAYS` entre 30 e 730 dias, padrão de 395;
+- exportação: disponível somente para usuário autenticado na empresa ativa;
 - auditoria de dependências: deve ser repetida no CI e antes de cada implantação.
 
 O resultado de uma auditoria representa apenas o instante em que foi executada e não constitui garantia permanente de ausência de vulnerabilidades.
@@ -76,6 +80,8 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 - expiração e revogação administrativa de sessões;
 - antivírus e quarentena para tipos de arquivo futuros além de imagens;
 - limitação de requisições no endpoint público de Wi-Fi;
+- rate limiting distribuído no endpoint público de eventos;
+- agendamento e monitoramento operacional do expurgo de analytics;
 - headers CSP definitivos;
 - logs estruturados e alertas;
 - pentest interno;

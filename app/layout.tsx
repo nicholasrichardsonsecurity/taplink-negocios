@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
+import "./analytics.css";
 import "./editor.css";
 
 export const metadata:Metadata={title:"TapLink Negócios",description:"Tudo do seu negócio em um toque."};
