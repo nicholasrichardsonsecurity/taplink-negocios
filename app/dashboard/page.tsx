@@ -20,7 +20,7 @@ export default async function Dashboard() {
           <a href="/dashboard/analytics">Analytics</a>
           <a href="/dashboard/insights">Insights</a>
           <a>Equipe</a>
-          <a>Plano e cobrança</a>
+          <a href="/dashboard/billing">Plano e cobrança</a>
         </nav>
         <form action="/api/auth/logout" method="post">
           <button>Sair</button>

@@ -22,6 +22,8 @@ A Missão 1.5 adicionou estatísticas anônimas. Não são persistidos endereço
 
 A Missão 1.6 adicionou relatórios e recomendações locais, com uso opcional da OpenAI Responses API. Nenhum código do repositório de referências `awesome-llm-apps` foi incorporado. A integração permanece desligada por padrão, envia somente métricas agregadas, aplica orçamento por empresa e não autoriza publicação automática de conteúdo.
 
+A Missão 1.7 adicionou catálogo comercial e integração de assinaturas com o Asaas exclusivamente em sandbox. Nenhuma cobrança real está autorizada. Dados financeiros demonstrativos não devem representar clientes reais; produção depende de contrato, revisão LGPD, HTTPS, segredos exclusivos, conciliação e pentest.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições
