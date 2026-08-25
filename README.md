@@ -56,7 +56,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 | Missão 1.7 — planos e cobrança | Concluída | Catálogo, trial, Asaas sandbox, webhook e financeiro |
 | Missão 1.8 — operação administrativa | Concluída | Indicadores, ações seguras, direitos de plano e auditoria |
 | Missão 1.9A — endurecimento de acesso | Concluída | Rate limit, CSRF, reset de senha e revogação de sessões |
-| Missão 1.9B.2 — auditoria Debian | Pendente | Exige inspeção somente leitura com evidência real |
+| Missão 1.9B.2 — auditoria Debian | Em andamento | Capacidade e portas confirmadas; firewall, Caddy, backup e rollback pendentes |
 | Missão 1.9B.1 — proteção de borda | Concluída | CSP, rate limits públicos e conciliação consultiva |
 | Deploy Debian | Bloqueado | Depende da auditoria somente leitura |
 
@@ -287,8 +287,8 @@ Consulte [`SECURITY.md`](SECURITY.md).
 ### Missão 1.9B.2 — auditoria e homologação controlada
 
 - conciliação consultiva com o Asaas e alertas operacionais;
-- auditoria somente leitura do Debian e plano de implantação;
-- confirmar proxy, portas, recursos, backup e rollback com evidência do host;
+- concluir a auditoria somente leitura do Debian e o plano de implantação;
+- recursos e portas já confirmados; validar firewall, Caddy, backup e rollback com evidência do host;
 - piloto físico Lisarojo após gate de segurança.
 
 ## Titularidade
