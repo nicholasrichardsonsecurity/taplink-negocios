@@ -204,6 +204,12 @@ Nenhum deploy será realizado antes da auditoria definida em [`docs/SERVER_ISOLA
 
 NFC, QR Code, Wi-Fi, editor, analytics e páginas não dependerão de API externa para funcionar.
 
+## Agentes e aceleração
+
+O desenvolvimento poderá usar skills locais para revisar escopo, dependências e histórico Git. Recursos comerciais de IA serão opcionais e entrarão depois do analytics convencional.
+
+Consulte o guia de agentes, instalação e roadmap em [`docs/AI_ACCELERATION_AND_AGENTS.md`](docs/AI_ACCELERATION_AND_AGENTS.md).
+
 ## Segurança
 
 - dados reais ainda são proibidos;
