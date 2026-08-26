@@ -12,6 +12,8 @@ O repositório `Shubhamsaboo/awesome-llm-apps`, licenciado sob Apache-2.0, foi a
 
 ## Estado da implementação
 
+A interface institucional e o login foram modernizados sem incorporar templates, imagens ou código de terceiros. A autoria, a licença proprietária e os avisos do produto permanecem preservados.
+
 A Missão 1.2 estabeleceu o núcleo autenticado e multiempresa. O código foi validado por integração automatizada com PostgreSQL real, mas ainda não constitui lançamento comercial nem autorização para tratamento de dados reais.
 
 A Missão 1.3 incorporou o editor white-label e a página pública dinâmica. Este marco continua sendo pré-produção: URLs, imagens, avaliações, contatos e Wi-Fi demonstrativos não representam autorização para publicação comercial em nome da Lisarojo.
