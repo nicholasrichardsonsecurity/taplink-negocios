@@ -17,6 +17,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - taplink_uploads:/app/data/uploads
     networks:
       - taplink_internal
       - taplink_edge
@@ -25,6 +29,26 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
+    mem_limit: 768m
+    cpus: 1.0
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migration
+    restart: "no"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - taplink_internal
+    mem_limit: 512m
+    cpus: 0.5
 
   postgres:
     image: postgres:17-alpine
@@ -42,18 +66,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-
-  minio:
-    image: minio/minio:latest
-    restart: unless-stopped
-    command: server /data
-    environment:
-      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY}
-      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY}
-    volumes:
-      - taplink_uploads:/data
-    networks:
-      - taplink_internal
+    mem_limit: 768m
+    cpus: 1.0
 
 networks:
   taplink_internal:

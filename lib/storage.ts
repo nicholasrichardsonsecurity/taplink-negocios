@@ -5,10 +5,25 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, isAbsolute, relative, resolve } from "node:path";
 
 const bucket = process.env.STORAGE_BUCKET ?? "taplink-private";
 let client: S3Client | undefined;
 let bucketReady = false;
+
+function filesystemPath(key: string) {
+  const root = resolve(process.env.STORAGE_PATH ?? "/app/data/uploads");
+  const target = resolve(root, key);
+  const nested = relative(root, target);
+  if (!key || isAbsolute(key) || nested.startsWith("..") || isAbsolute(nested))
+    throw new Error("Chave de armazenamento inválida.");
+  return target;
+}
+
+function usesFilesystem() {
+  return (process.env.STORAGE_DRIVER ?? "filesystem") === "filesystem";
+}
 
 function storageClient() {
   if (client) return client;
@@ -47,6 +62,12 @@ export async function putPrivateObject(
   body: Uint8Array,
   contentType: string,
 ) {
+  if (usesFilesystem()) {
+    const target = filesystemPath(key);
+    await mkdir(dirname(target), { recursive: true, mode: 0o700 });
+    await writeFile(target, body, { mode: 0o600 });
+    return;
+  }
   await ensureBucket();
   await storageClient().send(
     new PutObjectCommand({
@@ -60,6 +81,9 @@ export async function putPrivateObject(
 }
 
 export async function getPrivateObject(key: string) {
+  if (usesFilesystem()) {
+    return { bytes: new Uint8Array(await readFile(filesystemPath(key))) };
+  }
   const result = await storageClient().send(
     new GetObjectCommand({ Bucket: bucket, Key: key }),
   );
