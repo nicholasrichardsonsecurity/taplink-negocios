@@ -44,6 +44,8 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 
 ## Estado atual
 
+A experiência institucional foi redesenhada como landing page comercial completa, com demonstração visual do produto, recursos, segmentos, fluxo de ativação, métricas, plano em destaque, CTA e login responsivo alinhado à marca.
+
 | Marco | Estado | Evidência |
 |---|---|---|
 | Missão 0 — conceito e protótipo | Concluída | Modelos Lisarojo, GigaNetPe e barbearia |

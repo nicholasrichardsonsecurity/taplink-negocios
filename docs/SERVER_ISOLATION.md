@@ -8,6 +8,8 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 
 ## Situação em 25/08/2026
 
+- a atualização visual da landing page e do login não cria portas, serviços, volumes, migrations ou dependências de infraestrutura;
+
 - auditoria inicial somente leitura recebida e registrada em 25/08/2026;
 - host confirmado como Debian 12 `bookworm`, kernel `6.1.0-49-amd64`, virtualização KVM e arquitetura x86-64;
 - Docker Engine `29.6.1`, API `1.55`, Compose `v5.2.0` e Caddy `v2.11.4` confirmados ativos;
