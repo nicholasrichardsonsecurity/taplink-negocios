@@ -2,10 +2,12 @@
 
 ## Não lançado — Missão 1.9B.2
 
+- landing page institucional reconstruída com narrativa comercial completa, demonstração visual, recursos, segmentos, etapas, indicadores, plano, CTA e rodapé;
+- login modernizado com tipografia sem serifa, hierarquia responsiva, feedback de conexão e identidade consistente;
+- nenhuma regra de autenticação, banco, cobrança ou isolamento alterada pela revisão visual;
 - build Docker corrigido para não depender de credencial real durante a coleta de rotas do Next.js;
 - CI ampliado para construir as imagens finais de migration e web, fechando a diferença entre build Node e build Docker;
 - rastreamento dinâmico do armazenamento local delimitado para o empacotamento standalone;
-
 - job idempotente de migrations adicionado ao Compose antes da inicialização do web;
 - estágio Docker exclusivo de migration criado com código, dependências e arquivos do Drizzle;
 - armazenamento do MVP simplificado para volume privado exclusivo, mantendo S3 como opção futura;
