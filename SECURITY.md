@@ -105,6 +105,8 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 
 ## Pendências antes de clientes reais
 
+O build da imagem usa apenas uma URL sintética de banco no estágio de compilação. Credenciais de homologação e produção são injetadas exclusivamente no runtime e não são gravadas nas camadas da imagem.
+
 - segundo fator para painel interno;
 - expandir CSRF para todas as mutações não financeiras;
 - substituir `unsafe-inline` do CSP por nonces após adequar scripts e estilos do Next.js;
