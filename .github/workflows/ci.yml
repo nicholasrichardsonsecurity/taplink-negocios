@@ -39,6 +39,11 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Validar Docker Compose de homologação
+        run: |
+          cp .env.example .env
+          docker compose --env-file .env -f docker-compose.homolog.yml config --quiet
+          rm .env
       - run: npm ci
       - run: npm run check:ownership
       - run: npm run security:secrets

@@ -76,7 +76,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - senha do Wi-Fi ausente do HTML inicial;
 - auditoria de salvamento e publicação;
 - upload de logo com otimização e remoção de metadados;
-- arquivos privados em S3/MinIO e entrega pública por ativo autorizado;
+- arquivos privados em volume local isolado no MVP, S3 opcional e entrega pública somente por ativo autorizado;
 - QR Code Wi-Fi gerado localmente, sem API de terceiros;
 - cadastro interno e troca segura de empresa ativa;
 - analytics anônimo com visualizações, visitantes, ações e origens;

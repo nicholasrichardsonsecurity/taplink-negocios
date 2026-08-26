@@ -2,11 +2,16 @@
 
 ## Não lançado — Missão 1.9B.2
 
+- job idempotente de migrations adicionado ao Compose antes da inicialização do web;
+- estágio Docker exclusivo de migration criado com código, dependências e arquivos do Drizzle;
+- armazenamento do MVP simplificado para volume privado exclusivo, mantendo S3 como opção futura;
+- limites iniciais de CPU e memória definidos por serviço;
+- validação estrutural do Compose adicionada ao GitHub Actions;
 - primeira auditoria somente leitura do Debian registrada;
 - capacidade de disco e memória aprovada para homologação;
 - portas do LoopClub confirmadas em loopback e PostgreSQL sem publicação no host;
 - porta padrão do TapLink alterada de `3300` para `3400` para eliminar colisão;
-- rede de saída do serviço web separada da rede interna exclusiva do PostgreSQL e MinIO;
+- rede de saída do serviço web separada da rede interna exclusiva do PostgreSQL;
 - Caddy validado e porta `3400` confirmada livre em segunda coleta somente leitura;
 - ausência de firewall de host comprovado e de backup próprio do TapLink registrada como bloqueio para publicação;
 - procedimento exclusivo de backup, restauração e rollback documentado;

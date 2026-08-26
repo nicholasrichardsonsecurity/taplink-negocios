@@ -27,7 +27,7 @@ Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar 
 - migrations `0001_lucky_masked_marvel.sql` e `0002_smart_garia.sql` criadas; ainda não aplicadas no Debian;
 - migration `0003_fluffy_tarot.sql` criada para analytics; ainda não aplicada no Debian;
 - migration `0004_supreme_beast.sql` criada para configurações e histórico de insights; ainda não aplicada no Debian;
-- MinIO passou a ser requisito da aplicação para uploads, sempre restrito à rede interna.
+- uploads do MVP usam volume local privado e exclusivo, sem serviço ou porta adicional; S3 permanece uma evolução opcional;
 - a integração de IA é saída HTTPS opcional da aplicação, fica desligada na homologação inicial e não cria container, banco ou porta adicional;
 - migration `0005_naive_sharon_carter.sql` criada para planos, assinaturas, cobranças e eventos; ainda não aplicada no Debian;
 - migration `0006_revise_plan_entitlements.sql` criada para separar direitos do software da quantidade de placas; ainda não aplicada no Debian;
@@ -55,7 +55,7 @@ O primeiro acesso será exclusivamente diagnóstico e somente leitura. Nenhum co
 | Credenciais | Exclusivas e geradas aleatoriamente |
 | Porta da aplicação | `127.0.0.1:3400` |
 
-O PostgreSQL, o armazenamento e qualquer cache não terão portas publicadas no host. Somente o serviço web participa da rede `taplink_homolog_edge`, necessária para saídas HTTPS como Asaas e Resend; banco e MinIO permanecem exclusivamente na rede interna.
+O PostgreSQL e qualquer cache não terão portas publicadas no host. O volume privado de uploads é montado somente no serviço web. Apenas o web participa da rede `taplink_homolog_edge`, necessária para saídas HTTPS como Asaas e Resend; o banco permanece exclusivamente na rede interna.
 
 ## Auditoria inicial somente leitura
 
@@ -165,7 +165,8 @@ Antes do primeiro deploy:
 - webhook Asaas publicado somente após HTTPS, token forte e teste de idempotência;
 - IA externa mantida desligada até existir segredo exclusivo, orçamento aprovado e revisão dos logs de saída;
 - expurgo de analytics executado por agendamento exclusivo do projeto e com logs sem dados pessoais;
-- upload e recuperação de uma imagem de teste confirmados sem expor a porta do MinIO;
+- upload e recuperação de uma imagem de teste confirmados no volume privado, sem exposição direta dos arquivos;
+- job `migrate` concluído com sucesso antes do serviço web e migrations `0000` a `0007` conferidas;
 - logs sem segredos;
 - reinício automático validado somente nos containers TapLink;
 - backup e restauração documentados;
