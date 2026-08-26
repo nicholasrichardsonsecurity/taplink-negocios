@@ -104,6 +104,7 @@ O estabelecimento altera tudo pelo painel sem reimprimir a placa ou regravar a t
 - conciliação Asaas sob demanda, somente leitura e auditável;
 - migrations PostgreSQL versionadas;
 - CI com banco real e testes ponta a ponta.
+- CI valida também a construção integral das imagens Docker de migration e web.
 
 ## Arquitetura atual
 

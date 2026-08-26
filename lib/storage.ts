@@ -13,7 +13,10 @@ let client: S3Client | undefined;
 let bucketReady = false;
 
 function filesystemPath(key: string) {
-  const root = resolve(process.env.STORAGE_PATH ?? "/app/data/uploads");
+  const root = resolve(
+    /* turbopackIgnore: true */
+    process.env.STORAGE_PATH ?? "/app/data/uploads",
+  );
   const target = resolve(root, key);
   const nested = relative(root, target);
   if (!key || isAbsolute(key) || nested.startsWith("..") || isAbsolute(nested))
@@ -82,7 +85,11 @@ export async function putPrivateObject(
 
 export async function getPrivateObject(key: string) {
   if (usesFilesystem()) {
-    return { bytes: new Uint8Array(await readFile(filesystemPath(key))) };
+    return {
+      bytes: new Uint8Array(
+        await readFile(/* turbopackIgnore: true */ filesystemPath(key)),
+      ),
+    };
   }
   const result = await storageClient().send(
     new GetObjectCommand({ Bucket: bucket, Key: key }),

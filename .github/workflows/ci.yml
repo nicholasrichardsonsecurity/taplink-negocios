@@ -51,6 +51,11 @@ jobs:
       - run: npm run test:unit
       - run: npm run db:migrate
       - run: npm run build
+      - name: Construir imagens Docker de homologação
+        run: |
+          cp .env.example .env
+          docker compose --env-file .env -f docker-compose.homolog.yml build migrate web
+          rm .env
       - name: Iniciar aplicação
         run: |
           npm start > /tmp/taplink-next.log 2>&1 &

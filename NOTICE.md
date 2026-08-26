@@ -30,6 +30,8 @@ A Missão 1.9A adicionou controles de acesso, recuperação de senha e revogaç�
 
 A Missão 1.9B.1 adicionou proteção de borda e consulta financeira somente leitura. Nenhuma consulta ao Asaas real foi executada e nenhuma evidência do Debian foi presumida; o gate do host continua aberto.
 
+A preparação da homologação passou a validar no CI as imagens Docker efetivamente usadas no servidor. A URL de banco presente durante a compilação é sintética e não concede acesso a qualquer ambiente.
+
 O editor e as páginas demonstrativas anteriores são referências de produto. A implementação oficial será exclusivamente a versionada neste repositório privado.
 
 ## Controle de contribuições

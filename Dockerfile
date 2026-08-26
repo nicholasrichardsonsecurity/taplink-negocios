@@ -7,7 +7,8 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    DATABASE_URL=postgresql://build:build@127.0.0.1:5432/build
 RUN npm run build
 
 FROM dependencies AS migration
