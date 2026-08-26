@@ -105,6 +105,8 @@ Credenciais comprometidas devem ser revogadas imediatamente e o incidente regist
 
 ## Pendências antes de clientes reais
 
+A reformulação institucional e do login não alterou autenticação, cookies, autorização, banco ou tratamento de segredos. O formulário mantém os mesmos contratos protegidos do backend.
+
 O build da imagem usa apenas uma URL sintética de banco no estágio de compilação. Credenciais de homologação e produção são injetadas exclusivamente no runtime e não são gravadas nas camadas da imagem.
 
 - segundo fator para painel interno;
