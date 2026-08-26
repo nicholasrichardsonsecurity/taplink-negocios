@@ -1,5 +1,7 @@
 # Isolamento do servidor de homologação
 
+> O build Docker utiliza somente uma URL sintética e inacessível de PostgreSQL. Segredos reais entram apenas no runtime pelo `.env` local protegido e não devem integrar imagens, logs ou evidências de diagnóstico.
+
 ## Objetivo
 
 Hospedar o TapLink Negócios no servidor Debian `190.89.151.9` sem compartilhar recursos lógicos nem alterar o LoopClub.
