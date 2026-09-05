@@ -133,6 +133,24 @@ export default function Editor({
                   onChange={(e) => set("description", e.target.value)}
                 />
               </Field>
+              <Field label="Imagem de capa">
+                <input
+                  type="url"
+                  placeholder="https://..."
+                  value={s.heroImageUrl}
+                  onChange={(e) => set("heroImageUrl", e.target.value)}
+                />
+                <small>Use uma imagem própria ou uma URL HTTPS confiável.</small>
+              </Field>
+              <Field label="Tema da página">
+                <select
+                  value={s.theme}
+                  onChange={(e) => set("theme", e.target.value as PageSettings["theme"])}
+                >
+                  <option value="light">Claro</option>
+                  <option value="dark">Escuro</option>
+                </select>
+              </Field>
               <Field label="Enviar logomarca">
                 <input
                   type="file"
