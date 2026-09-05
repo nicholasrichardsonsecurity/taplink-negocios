@@ -31,8 +31,9 @@ export default async function Dashboard() {
       <section>
         <header>
           <div>
-            <small>EMPRESA ATIVA</small>
+            <small>VISÃO GERAL</small>
             <h1>{s.organizationName}</h1>
+            <p className="dashboard-subtitle">O centro de controle da sua presença digital.</p>
           </div>
           <div className="profile">
             <span>{s.userName.charAt(0)}</span>
@@ -42,41 +43,30 @@ export default async function Dashboard() {
             </div>
           </div>
         </header>
-        <div className="welcome">
-          <small>MISSÃO 1.6</small>
-          <h2>Dados que viram próximos passos.</h2>
-          <p>
-            Receba recomendações explicáveis, com orçamento e aprovação humana.
-          </p>
+        <div className="welcome dashboard-hero">
+          <div><small>PÁGINA PUBLICADA</small><h2>Sua empresa em um toque.</h2><p>Centralize seus canais, informações e ofertas em uma experiência simples para seus clientes.</p><div className="hero-actions"><a href={`/p/${s.organizationSlug}`}>Ver página pública ↗</a><a className="hero-link" href="/dashboard/page-editor">Editar página</a></div></div>
+          <div className="phone-preview"><b>{s.organizationName}</b><small>taplink</small><div>WhatsApp</div><div>Instagram</div><div>Como chegar</div></div>
         </div>
+        <div className="dashboard-section-head"><div><small>DESEMPENHO</small><h2>O que está acontecendo</h2></div><a href="/dashboard/analytics">Ver relatório completo →</a></div>
         <div className="metrics">
           <article>
-            <small>PÁGINA PÚBLICA</small>
-            <b>Editor ativo</b>
-            <span>Rascunho e publicação</span>
+            <small>ACESSOS À PÁGINA</small><b>—</b><span>Configure o Analytics para acompanhar</span>
           </article>
           <article>
-            <small>EMPRESA</small>
-            <b>{s.organizationSlug}</b>
-            <span>Tenant ativo na sessão</span>
+            <small>CLIQUES EM CANAIS</small><b>—</b><span>WhatsApp, Instagram, site e cardápio</span>
           </article>
           <article>
-            <small>PERFIL</small>
-            <b>{s.role}</b>
-            <span>Permissão carregada do banco</span>
+            <small>QR CODE / NFC</small><b>Ativo</b><span>Pronto para divulgar sua empresa</span>
           </article>
         </div>
-        <div className="next-card">
+        <div className="dashboard-grid"><div className="next-card setup-card">
           <div>
-            <small>EDITOR WHITE-LABEL</small>
-            <h3>Personalize a página pública</h3>
-            <p>Identidade visual, links, Wi-Fi e atalhos configuráveis.</p>
+            <small>ATIVAÇÃO DA EMPRESA</small><h3>Deixe sua página completa</h3><p>Complete estas etapas para oferecer uma experiência profissional a quem escanear seu QR Code.</p><div className="progress-track"><span /></div><div className="setup-list">✓ Conta criada · ○ Dados da empresa · ○ Logo e cores · ○ WhatsApp e redes · ○ Localização · ○ Wi-Fi</div>
           </div>
           <a className="dashboard-cta" href="/dashboard/page-editor">
-            Abrir editor
+            Continuar configuração →
           </a>
-        </div>
-        <div className="next-card" style={{marginTop: 15}}><div><small>INSIGHTS</small><h3>Entenda a semana em segundos</h3><p>Relatório local sempre disponível e IA generativa opcional.</p></div><a className="dashboard-cta" href="/dashboard/insights">Abrir insights</a></div>
+        </div><div className="quick-card"><small>AÇÕES RÁPIDAS</small><h3>Gerencie sua presença</h3><a href="/dashboard/page-editor">✦ Editar página pública →</a><a href="/dashboard/page-editor#wifi">⌁ Configurar Wi-Fi →</a><a href="/dashboard/analytics">◌ Acompanhar analytics →</a></div></div>
       </section>
     </main>
   );

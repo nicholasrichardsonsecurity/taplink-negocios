@@ -7,6 +7,7 @@ import "./insights.css";
 import "./billing.css";
 import "./admin.css";
 import "./editor.css";
+import "./product-ui.css";
 
 export const metadata:Metadata={title:"TapLink Negócios",description:"Tudo do seu negócio em um toque."};
 
