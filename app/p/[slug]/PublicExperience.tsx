@@ -56,7 +56,7 @@ export default function PublicExperience({
   }
   return (
     <main
-      className="business-page"
+      className={`business-page ${s.theme === "dark" ? "business-dark" : ""}`}
       style={
         {
           "--business": s.primaryColor,
@@ -83,7 +83,7 @@ export default function PublicExperience({
           </nav>
         )}
       </header>
-      <section id="inicio" className="business-hero">
+      <section id="inicio" className="business-hero" style={{backgroundImage:s.heroImageUrl ? `linear-gradient(90deg,${s.primaryColor}ee,${s.primaryColor}88),url(${s.heroImageUrl})` : undefined}}>
         <div>
           <small>{s.category}</small>
           <h1>{s.tagline}</h1>
