@@ -58,3 +58,5 @@
     padding: 25px 15px;
   }
 }
+
+.business-page .business-hero h1,.business-page .business-promo h2,.business-page .business-menu h2,.business-page .business-review h2,.business-page .business-about h2,.business-page .business-location h2{font-family:Arial,Helvetica,sans-serif!important;font-weight:800!important;letter-spacing:-.06em}
