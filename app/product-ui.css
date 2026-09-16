@@ -63,3 +63,48 @@ html.dark .theme-toggle {
     transition: none;
   }
 }
+
+html.dark .quick-card>a,
+html.dark .quick-card>a:visited {
+  color: #f8fafc !important;
+}
+
+html.dark .quick-card>a:hover {
+  color: #a78bfa !important;
+}
+
+html.dark .setup-list,
+html.dark .setup-card p,
+html.dark .metrics article span {
+  color: #cbd5e1 !important;
+}
+
+html.dark .dashboard-section-head>a {
+  color: #a78bfa !important;
+}
+
+html.dark .dashboard > section > header h1,
+html.dark .dashboard-section-head h2,
+html.dark .setup-card h3,
+html.dark .quick-card h3 {
+  color: #f8fafc !important;
+}
+
+
+html.dark .dashboard .quick-card a,
+html.dark .dashboard .quick-card a:link,
+html.dark .dashboard .quick-card a:visited {
+  color: #f8fafc !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+html.dark .dashboard .quick-card a:hover {
+  color: #a78bfa !important;
+}
+
+html.dark .dashboard .setup-list,
+html.dark .dashboard .setup-card p,
+html.dark .dashboard .metrics article span {
+  color: #cbd5e1 !important;
+}
