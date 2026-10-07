@@ -1,5 +1,6 @@
 import { requireSession } from "@/lib/auth/session";
 import { csrfToken } from "@/lib/security";
+import ThemeToggle from "./ThemeToggle";
 
 export default async function Dashboard() {
   const s = await requireSession();
@@ -35,6 +36,7 @@ export default async function Dashboard() {
             <h1>{s.organizationName}</h1>
             <p className="dashboard-subtitle">O centro de controle da sua presença digital.</p>
           </div>
+          <ThemeToggle />
           <div className="profile">
             <span>{s.userName.charAt(0)}</span>
             <div>
