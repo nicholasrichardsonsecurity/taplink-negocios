@@ -108,3 +108,224 @@ html.dark .dashboard .setup-card p,
 html.dark .dashboard .metrics article span {
   color: #cbd5e1 !important;
 }
+
+.dashboard-shell {
+  --shell-bg: #f7f8fc;
+  --shell-card: #ffffff;
+  --shell-text: #111827;
+  --shell-muted: #667085;
+  --shell-line: #e5e7eb;
+  --shell-brand: #6335e8;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  background: var(--shell-bg);
+  color: var(--shell-text);
+}
+
+.dashboard-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 18px 20px;
+  background: #111321;
+  color: #fff;
+}
+
+.dashboard-sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px 34px;
+}
+
+.dashboard-sidebar .brand span {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #6335e8, #d33bb0);
+  color: #fff;
+  font: 700 24px Georgia;
+}
+
+.dashboard-sidebar .brand b {
+  font-size: 18px;
+}
+
+.dashboard-sidebar nav {
+  display: grid;
+  gap: 6px;
+}
+
+.dashboard-sidebar nav a {
+  padding: 13px 15px;
+  border-radius: 11px;
+  color: #aeb4c6;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s ease;
+}
+
+.dashboard-sidebar nav a:hover,
+.dashboard-sidebar nav a:first-child {
+  background: #292044;
+  color: #fff;
+}
+
+.dashboard-sidebar form {
+  margin-top: auto;
+}
+
+.dashboard-sidebar form button {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #34384b;
+  border-radius: 11px;
+  background: transparent;
+  color: #d8dbea;
+  cursor: pointer;
+}
+
+.dashboard-shell-content {
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.dashboard-shell-header {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px clamp(24px, 4vw, 58px);
+  border-bottom: 1px solid var(--shell-line);
+  background: var(--shell-card);
+}
+
+.dashboard-shell-header small,
+.dashboard-shell-header b {
+  display: block;
+}
+
+.dashboard-shell-header small {
+  margin-bottom: 4px;
+  color: var(--shell-muted);
+  font-size: 9px;
+  letter-spacing: .12em;
+}
+
+.dashboard-shell-header b {
+  font-size: 13px;
+}
+
+.dashboard-shell-actions,
+.dashboard-shell-actions .profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dashboard-shell-actions .profile > span {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--shell-brand);
+  color: #fff;
+  font-weight: 800;
+}
+
+.dashboard-shell-actions .profile small {
+  margin: 3px 0 0;
+  letter-spacing: 0;
+  font-size: 10px;
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--shell-line);
+  border-radius: 11px;
+  background: var(--shell-card);
+  color: var(--shell-text);
+  cursor: pointer;
+}
+
+.dashboard-shell-content > .dashboard {
+  min-height: auto;
+}
+
+.dashboard-shell-content > .analytics-page,
+.dashboard-shell-content > .billing-page,
+.dashboard-shell-content > .insights-page {
+  max-width: none;
+  margin: 0;
+}
+
+html.dark .dashboard-shell {
+  --shell-bg: #0d0f18;
+  --shell-card: #171a27;
+  --shell-text: #f8fafc;
+  --shell-muted: #aab2c5;
+  --shell-line: #2b3042;
+}
+
+html.dark .dashboard-shell-header {
+  background: var(--shell-card);
+}
+
+html.dark .dashboard-shell-content > .analytics-page,
+html.dark .dashboard-shell-content > .billing-page,
+html.dark .dashboard-shell-content > .insights-page {
+  background: var(--shell-bg);
+}
+
+@media (max-width: 900px) {
+  .dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-sidebar {
+    position: relative;
+    height: auto;
+    padding: 14px;
+  }
+
+  .dashboard-sidebar .brand {
+    padding: 4px 8px 14px;
+  }
+
+  .dashboard-sidebar .brand span {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .dashboard-sidebar nav {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .dashboard-sidebar nav a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .dashboard-sidebar form {
+    display: none;
+  }
+
+  .dashboard-shell-header {
+    padding: 14px 18px;
+  }
+}
+
