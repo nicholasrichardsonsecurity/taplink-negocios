@@ -329,3 +329,58 @@ html.dark .dashboard-shell-content > .insights-page {
   }
 }
 
+.dashboard-shell-content > .dashboard {
+  display: block !important;
+  min-height: 0;
+  width: 100%;
+}
+
+.dashboard-shell-content > .dashboard > section {
+  width: auto;
+  min-width: 0;
+}
+
+html.dark .analytics-page article,
+html.dark .billing-page section,
+html.dark .insights-page article,
+html.dark .insights-page section {
+  background: #171a27 !important;
+  border-color: #2b3042 !important;
+  color: #f8fafc !important;
+}
+
+html.dark .analytics-page h2,
+html.dark .billing-page h2,
+html.dark .insights-page h2,
+html.dark .analytics-page article b,
+html.dark .billing-page article b,
+html.dark .insights-page article strong,
+html.dark .insights-page article dd {
+  color: #f8fafc !important;
+}
+
+html.dark .analytics-page p,
+html.dark .billing-page p,
+html.dark .insights-page p,
+html.dark .analytics-page span,
+html.dark .billing-page span,
+html.dark .insights-page span {
+  color: #cbd5e1 !important;
+}
+
+html.dark .evidence dl div {
+  background: #202437 !important;
+}
+
+html.dark .plan-grid article a,
+html.dark .subscribe-card button {
+  color: #fff !important;
+}
+
+html.dark .dashboard-shell-content > .dashboard {
+  background: #0d0f18 !important;
+}
+
+html.dark .dashboard-shell-content > .dashboard > section > header .profile {
+  display: none;
+}
