@@ -16,14 +16,34 @@ export const csrfToken = (sessionTokenHash: string) => securityHash(`csrf|${sess
 
 export function validCsrf(request: Request, sessionTokenHash: string, submitted: unknown) {
   if (typeof submitted !== "string") return false;
-  const expectedOrigin = process.env.APP_URL;
+  const allowedOrigins = [
+  process.env.APP_URL,
+  ...(process.env.CSRF_ALLOWED_ORIGINS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean),
+].filter((value): value is string => Boolean(value));
   const origin = request.headers.get("origin");
-  if (expectedOrigin && origin) {
-    try { if (new URL(origin).origin !== new URL(expectedOrigin).origin) return false; } catch { return false; }
+  if (origin && allowedOrigins.length > 0) {
+  try {
+    const validOrigin = allowedOrigins.some(
+      (allowed) => new URL(origin).origin === new URL(allowed).origin,
+    );
+
+    if (!validOrigin) return false;
+  } catch {
+    return false;
   }
-  const expected = Buffer.from(csrfToken(sessionTokenHash));
-  const received = Buffer.from(submitted);
-  return expected.length === received.length && timingSafeEqual(expected, received);
+}
+
+const expected = Buffer.from(csrfToken(sessionTokenHash));
+const received = Buffer.from(submitted);
+
+const validToken =
+  expected.length === received.length &&
+  timingSafeEqual(expected, received);
+return validToken;
+
 }
 
 export async function consumeRateLimit(input: { scope: string; identity: string; limit: number; windowMs: number; now?: Date }) {
