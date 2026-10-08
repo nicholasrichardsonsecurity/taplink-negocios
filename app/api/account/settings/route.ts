@@ -2,15 +2,15 @@ import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/packages/database/client";
 import { auditLogs, sessions, users } from "@/packages/database/schema";
-import { getSessionContext, hashSessionToken } from "@/lib/auth/session";
+import { getSessionContext } from "@/lib/auth/session";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
-import { csrfToken, validCsrf } from "@/lib/security";
+import { validCsrf } from "@/lib/security";
 
 const schema = z.object({
   csrf: z.string().min(20),
   name: z.string().trim().min(2).max(120),
   email: z.email().trim().toLowerCase().max(180),
-  currentPassword: z.string().min(1).max(128),
+  currentPassword: z.string().max(128).optional().or(z.literal("")),
   newPassword: z.string().min(10).max(128).optional().or(z.literal("")),
 });
 
@@ -47,12 +47,19 @@ export async function PUT(request: Request) {
     .where(eq(users.id, session.userId))
     .limit(1);
 
-  if (!user || !(await verifyPassword(parsed.data.currentPassword, user.passwordHash))) {
-    return Response.json(
-      { error: "A senha atual está incorreta." },
-      { status: 403 },
-    );
-  }
+  const passwordChanged = Boolean(parsed.data.newPassword);
+
+if (
+  !user ||
+  (passwordChanged &&
+    (!parsed.data.currentPassword ||
+      !(await verifyPassword(parsed.data.currentPassword, user.passwordHash))))
+ ) {
+  return Response.json(
+    { error: "A senha atual está incorreta." },
+    { status: 403 },
+   );
+}
 
   const emailInUse = await db
     .select({ id: users.id })
@@ -66,8 +73,6 @@ export async function PUT(request: Request) {
       { status: 409 },
     );
   }
-
-  const passwordChanged = Boolean(parsed.data.newPassword);
 
   await db.transaction(async (tx) => {
     await tx

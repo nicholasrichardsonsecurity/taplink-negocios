@@ -76,14 +76,19 @@ export default function SettingsForm({ csrf, name, email }: Props) {
 
         <label>
           Senha atual
-          <input name="currentPassword" type="password" required />
+          <input name="currentPassword" type="password" />
+
+
         </label>
 
         <label>
           Nova senha
           <input name="newPassword" type="password" minLength={10} />
         </label>
-
+	<p className="form-help">
+	  Para alterar nome ou e-mail, não é necessário informar a senha.
+	  Para trocar a senha, informe a senha atual e preencha os dois campos seguintes.
+	</p>
         <label>
           Confirmar nova senha
           <input name="confirmPassword" type="password" minLength={10} />
