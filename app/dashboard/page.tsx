@@ -12,13 +12,6 @@ export default async function Dashboard() {
             <h1>{s.organizationName}</h1>
             <p className="dashboard-subtitle">O centro de controle da sua presença digital.</p>
           </div>
-          <div className="profile">
-            <span>{s.userName.charAt(0)}</span>
-            <div>
-              <b>{s.userName}</b>
-              <small>{s.role}</small>
-            </div>
-          </div>
         </header>
         <div className="welcome dashboard-hero">
           <div><small>PÁGINA PUBLICADA</small><h2>Sua empresa em um toque.</h2><p>Centralize seus canais, informações e ofertas em uma experiência simples para seus clientes.</p><div className="hero-actions"><a href={`/p/${s.organizationSlug}`}>Ver página pública ↗</a><a className="hero-link" href="/dashboard/page-editor">Editar página</a></div></div>

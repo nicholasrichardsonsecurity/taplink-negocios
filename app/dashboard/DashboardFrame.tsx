@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 export default function DashboardFrame({
@@ -10,6 +11,11 @@ export default function DashboardFrame({
   shell: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+useEffect(() => {
+  document.documentElement.classList.remove("dark");
+  localStorage.removeItem("taplink-theme");
+}, []);
 
   if (pathname.startsWith("/dashboard/page-editor")) {
     return <>{children}</>;

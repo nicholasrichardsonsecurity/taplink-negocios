@@ -1,6 +1,6 @@
+import DashboardNav from "./DashboardNav";
 import { requireSession } from "@/lib/auth/session";
 import { csrfToken } from "@/lib/security";
-import ThemeToggle from "./ThemeToggle";
 import DashboardFrame from "./DashboardFrame";
 
 export default async function DashboardLayout({
@@ -18,23 +18,7 @@ export default async function DashboardLayout({
           <b>TapLink</b>
         </div>
 
-        <nav>
-          <a href="/dashboard">Visão geral</a>
-          <a href="/dashboard/page-editor">Página pública</a>
-          <a href="/dashboard/organizations">Trocar empresa</a>
-
-          {s.platformRole === "platform_admin" && (
-            <>
-              <a href="/admin/operations">Operação da plataforma</a>
-              <a href="/admin/reconciliation">Conciliação Asaas</a>
-              <a href="/admin/security">Segurança e sessões</a>
-            </>
-          )}
-
-          <a href="/dashboard/analytics">Analytics</a>
-          <a href="/dashboard/insights">Insights</a>
-          <a href="/dashboard/billing">Plano e cobrança</a>
-        </nav>
+	<DashboardNav platformAdmin={s.platformRole === "platform_admin"} />
 
         <form action="/api/auth/logout" method="post">
           <input
@@ -54,7 +38,6 @@ export default async function DashboardLayout({
           </div>
 
           <div className="dashboard-shell-actions">
-            <ThemeToggle />
 
             <div className="profile">
               <span>{s.userName.charAt(0)}</span>
