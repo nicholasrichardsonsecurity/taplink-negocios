@@ -1,6 +1,7 @@
 import { requireSession } from "@/lib/auth/session";
 import { csrfToken } from "@/lib/security";
 import ThemeToggle from "./ThemeToggle";
+import DashboardFrame from "./DashboardFrame";
 
 export default async function DashboardLayout({
   children,
@@ -9,7 +10,7 @@ export default async function DashboardLayout({
 }) {
   const s = await requireSession();
 
-  return (
+  const shell = (
     <main className="dashboard-shell">
       <aside className="dashboard-sidebar">
         <div className="brand">
@@ -54,8 +55,10 @@ export default async function DashboardLayout({
 
           <div className="dashboard-shell-actions">
             <ThemeToggle />
+
             <div className="profile">
               <span>{s.userName.charAt(0)}</span>
+
               <div>
                 <b>{s.userName}</b>
                 <small>{s.role}</small>
@@ -68,5 +71,10 @@ export default async function DashboardLayout({
       </section>
     </main>
   );
-}
 
+  return (
+    <DashboardFrame shell={shell}>
+      {children}
+    </DashboardFrame>
+  );
+}

@@ -384,3 +384,32 @@ html.dark .dashboard-shell-content > .dashboard {
 html.dark .dashboard-shell-content > .dashboard > section > header .profile {
   display: none;
 }
+
+.dashboard-shell-content > .dashboard {
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  background: var(--shell-bg) !important;
+}
+
+.dashboard-shell-content > .dashboard > section {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 42px clamp(24px, 4vw, 64px) 80px !important;
+}
+
+.dashboard-shell-content > .dashboard > section > header {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+}
+
+.dashboard-shell-content > .dashboard .dashboard-hero {
+  width: 100% !important;
+}
+
+.dashboard-shell-content > .dashboard .dashboard-grid {
+  width: 100% !important;
+}
